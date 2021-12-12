@@ -1,0 +1,63 @@
+.carousel.home {
+    height: 46rem;
+    flex: 1;
+
+    @include respond(800px) {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+}
+
+.carousel {
+
+    &__image-container { 
+        //height: 90%;
+        width: 100%;
+        position: relative;
+        overflow: hidden; 
+
+        @include respond(800px) {
+            height: auto;
+            margin-bottom: $gutter-vertical-small;
+        }
+
+    }
+
+    &__image {
+        width: 100%;
+        height: 100%;
+        position: static;
+        border-radius: $border-radius-primary;
+
+        @include respond(800px) {
+            height: auto;
+        }
+    }
+
+    &__indicators {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 10%;
+
+        @include respond(800px) {
+            height: auto;
+        }
+
+        &-dot {
+            width: 10px;
+            height: 10px;
+            background-color: lighten($color-dark, 80%);
+            border-radius: 50%;
+
+            &:not(:last-child) {
+                margin-right: 10px;
+            }
+        }
+
+        &-dot--active {
+            background-color: $color-primary;
+        }
+    }
+}

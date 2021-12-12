@@ -1,0 +1,40 @@
+.verification {
+    width: 100vw;
+    height: 100vh;
+    background-color: $color-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    &__container {
+        max-width: 20rem;
+        background-color: $body-base;
+        padding: 1rem;
+        border-radius: $border-radius-primary;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__header {
+        text-align: center;
+    }
+
+    &__logo {
+        width: 2rem;
+    }
+
+    &__link {
+        outline: none;
+        text-decoration: none;
+        padding: 1rem 2rem;
+        cursor: pointer;
+        font-size: map-get($map: $font-sizes, $key: "xsm");
+        background-color: $color-primary-dark;
+        color: $body-base;
+        border: none;
+        border-radius: $border-radius-primary;
+    }
+}

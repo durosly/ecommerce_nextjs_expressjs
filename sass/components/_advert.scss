@@ -1,0 +1,30 @@
+.advert {
+    @include card(1.2rem, $gutter-vertical);
+
+    &__dual-grid {
+        display: flex;
+        max-height: 30rem;
+        overflow: hidden;
+    }
+
+    &__dual-link {
+        flex: 1 1 50%;
+        border-radius: $border-radius-primary;
+        overflow: hidden;
+        transform: scale(.99);
+        transition: transform .1s ease;
+        &:not(:last-child) {
+            margin-right: $gutter-horizontal;
+        }
+
+        &:hover {
+            //box-shadow: $shadow-primary; 
+            transform: scale(1);
+        }
+    }
+
+    &__dual-img {
+        width: 100%;
+        height: 100%;
+    }
+}

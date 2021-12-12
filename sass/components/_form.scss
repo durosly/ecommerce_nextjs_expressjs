@@ -1,0 +1,168 @@
+.form {
+    background-color: $white-primary;
+    padding: 2rem;
+    border-radius: $border-radius-primary;
+
+    &__group {
+        display: flex;
+        position: relative;
+        margin-bottom: 1rem;
+        &--email {
+            &::before {
+                @include form-font("\f0e0");
+
+            }
+        }
+
+        &--password {
+            &::before {
+                @include form-font("\f023");
+
+            }
+        }
+
+        &--user {
+            &::before {
+                @include form-font("\f508"); 
+            }
+        }
+
+        &--phone {
+            &::before {
+                @include form-font("\f095");
+            }
+        }
+    }
+
+    &__header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__title {
+        text-align: center;
+    }
+
+    &__img-container {
+        width: 10rem;
+        height: 10rem;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: $color-dark;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__logo {
+        width: 70%;
+        height: 70%;
+    }
+
+    &__main {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__input {
+        padding: 1rem 2rem;
+        border: none;
+        outline: none;
+        border-radius: $border-radius-primary;
+        background-color: darken($body-base, 10%);        
+        transition: backgroud-color ease .3s;
+
+        &.icon {
+            padding-left: 3.2rem;
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    &__input[type="text"],
+    &__input[type="email"],
+    &__input[type="password"] {
+        width: 100%;
+        &:focus {
+            background-color: darken($body-base, 5%);
+        }
+
+        &:focus:invalid {
+            background-color: $color-red-light;
+        }
+    }
+
+    &__action-btn {
+        background: linear-gradient(
+            -45deg,
+            $color-primary 0 calc(50% - 10px),
+            #F5F5F5 calc(50% - 10px) calc(50% + 10px),
+            $color-primary-dark calc(50% + 10px) 100%
+        );
+        background-size: 250% 100%;
+        background-position: 100% 50%;
+        
+        transition: 0.5s all;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: $border-radius-primary;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-weight: bold;
+
+        &:hover,
+        &:focus {
+            background-position: 0% 50%;
+            transition: 0.5s all;
+        }
+
+        &:disabled {
+            background: rgba($color-dark-2, .3);
+            cursor: not-allowed;
+        }
+    }
+
+    .return {
+        &-text {
+            font-size: map-get($map: $font-sizes, $key: "sm");
+            color: $color-dark;
+            text-align: right; 
+        }
+
+        &-link {
+            margin-left: .5rem;
+            border: 1px solid $color-primary;
+            padding: .5rem 1rem;
+            border-radius: $border-radius-primary;
+            transition: background-color .3s ease-out;
+            &:visited,
+            &:link {
+                text-decoration: none;
+                color: $color-primary;
+            }
+            &:active {
+                color: $color-primary-dark;
+            }
+            &:hover {
+                background-color: $color-primary;
+                color: $body-base;
+            }
+        }
+    }
+
+    &__password-toggler {
+        color: $color-primary;
+        text-align: right;
+        font-size: map-get($map: $font-sizes, $key: "sm");
+        margin-top: -8px;
+        margin-bottom: $gutter-vertical-small;
+
+        i {
+            display: inline-block;
+            cursor: pointer;
+        }
+    }
+}

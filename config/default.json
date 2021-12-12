@@ -1,0 +1,17 @@
+{
+    "db": {
+        "host": "localhost",
+        "name": "safe_plaze_db",
+        "username": "root",
+        "password": null
+    },
+    "email": {
+        "user": "durosly.test@gmail.com",
+        "pass": "durosly12345"
+    },
+    "base_url": "http://localhost:3000",
+    "cookie": {
+        "name": "safe-plaze-cookie",
+        "password": "io99v8serw9e8f9soiv98se9efs9oc8voseieif9sd8dcoief9s8ddo"
+    }
+}

@@ -1,0 +1,147 @@
+.footer {
+    background-color: $color-dark;
+    margin-top: 4rem;
+
+    &__dump {
+        background-color: $color-primary-dark;
+        height: 4rem;
+    }
+
+    &__top {
+        display: flex;
+        margin-top: 4rem; 
+        padding: 2rem;
+
+        @include respond (544px) {
+            flex-direction: column;
+            margin-top: 0;
+        }
+    
+        &-left {
+            flex: 1 0 10rem;
+
+            @include respond(544px) {
+                width: 15rem;
+                align-self: center;
+                margin-bottom: $gutter-vertical;
+            }
+        }
+
+        &-left-logo {
+            width: 100%;
+        }
+
+        &-right {
+            flex: 10 0 20rem;
+            color: $white-primary;
+            padding-left: 3rem;
+
+            @include respond (544px) {
+                flex: none;
+                padding: 0;
+            }
+
+            &--title {
+                font-size: map-get($map: $font-sizes, $key: "md");
+                margin: 0;
+                margin-bottom: .5rem;
+                text-transform: capitalize;
+                word-spacing: 2px;
+            }
+
+            &--desc {
+                font-size: map-get($map: $font-sizes, $key: "sm");
+            }
+        }
+    }
+
+    .subscribe-form {
+        display: flex;
+        margin-top: 2rem;
+
+        &__input {
+            flex: 1;
+            padding: 1rem 2rem;
+            border-radius: $border-radius-primary 0 0 $border-radius-primary;
+            border: none;
+            outline: none;
+            font-size: map-get($map: $font-sizes, $key: "sm");
+
+            @include respond(392px) {
+                font-size: map-get($map: $font-sizes, $key: "xsm");
+                padding: 0 1rem;
+            }
+        }
+
+        &__submit-btn {
+            outline: none;
+            border-radius: 0 $border-radius-primary $border-radius-primary 0;
+            border: none;
+            padding: 1rem 2.5rem; 
+            background-color: $color-secondary; 
+            cursor: pointer; 
+
+            @include respond(392px) {
+                //padding: .5rem;
+                padding: 1rem 1.5rem;
+            }
+        }
+    }
+
+    &__mid {
+        margin-top: $gutter-vertical-medium;
+        color: $white-primary;
+        background-color: lighten($color-dark, 5%);
+        padding: 0 2rem;
+        padding-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+
+        @include respond(480px) {
+            flex-direction: column;
+        }
+
+        a {
+            color: $color-primary;
+            font-size: map-get($map: $font-sizes, $key: "xsm");
+            text-decoration: none;
+        }
+
+        .help, .about {
+            display: flex;
+            flex-direction: column;
+
+            a {
+                text-transform: capitalize;
+
+                &:hover {
+                    color: $color-secondary;
+                }
+            }
+            
+            a:not(:last-child) {
+                margin-bottom: 1rem; 
+            }
+        }
+
+        .social {
+            a {
+                font-size: map-get($map: $font-sizes, $key: "md");
+            }
+
+            a:not(:last-child) {
+                margin-right: 1rem;
+            }
+        }
+
+        h4 {
+            font-size: map-get($map: $font-sizes, $key: "md");
+        }
+    }
+
+    &__bottom {
+        padding: 1rem 2rem;
+        color: $white-primary;
+        font-size: map-get($map: $font-sizes, $key: "sm");
+    }
+}

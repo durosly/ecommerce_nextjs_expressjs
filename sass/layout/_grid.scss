@@ -1,0 +1,14 @@
+.container {
+    max-width: $body-max-width; //1024px 
+    margin: 0 auto; 
+
+    @media only screen and (max-width: 1032px) {
+        padding: 0 1rem;
+    }
+}
+
+.category-slide-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: $gutter-vertical;
+}

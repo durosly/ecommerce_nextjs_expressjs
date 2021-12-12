@@ -1,0 +1,8 @@
+{
+    "db": {
+        "host": "SAFE_HOST",
+        "name": "SAFE_DBNAME",
+        "username": "SAFE_USERNAME",
+        "password": "SAFE_PASSWORD"
+    }
+}

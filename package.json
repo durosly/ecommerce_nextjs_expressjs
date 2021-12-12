@@ -1,15 +1,46 @@
 {
-  "private": true,
-  "scripts": {
-    "dev": "node server.js",
-    "build": "next build",
-    "start": "cross-env NODE_ENV=production node server.js"
-  },
-  "dependencies": {
-    "cross-env": "^7.0.2",
-    "express": "^4.17.1",
-    "next": "latest",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
-  }
+    "name": "safe-plaze",
+    "description": "A simple ecommerce website which encourages selling of crytocurrency",
+    "private": true,
+    "scripts": {
+        "dev": "nodemon server.js",
+        "build": "next build",
+        "start": "cross-env NODE_ENV=production node server.js",
+        "sass:compile": "node-sass sass/main.scss public/assets/css/app.css",
+        "sass:watch": "node-sass -w sass/main.scss public/assets/css/app.css"
+    },
+    "dependencies": {
+        "@badrap/bar-of-progress": "^0.1.2",
+        "@reduxjs/toolkit": "^1.6.1",
+        "bcryptjs": "^2.4.3",
+        "comma-number": "^2.1.0",
+        "config": "^3.3.6",
+        "cross-env": "^7.0.2",
+        "express": "^4.17.1",
+        "express-fileupload": "^1.2.1",
+        "joi": "^17.4.2",
+        "moment": "^2.29.1",
+        "mysql2": "^2.3.0",
+        "next": "latest",
+        "next-iron-session": "^4.2.0",
+        "nextjs-progressbar": "^0.0.11",
+        "nodemailer": "^6.6.5",
+        "plaiceholder": "^2.0.1",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-fast-marquee": "^1.2.1",
+        "react-loader-spinner": "^4.0.0",
+        "react-redux": "^7.2.5",
+        "react-toast-notifications": "^2.5.1",
+        "sass": "^1.41.0",
+        "sequelize": "^6.6.5",
+        "sharp": "^0.29.1",
+        "swr": "^1.0.1",
+        "uuid": "^8.3.2",
+        "zingchart": "^2.9.7",
+        "zingchart-react": "^3.1.0"
+    },
+    "devDependencies": {
+        "sequelize-cli": "^6.2.0"
+    }
 }

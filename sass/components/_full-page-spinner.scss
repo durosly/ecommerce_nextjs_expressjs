@@ -1,0 +1,25 @@
+.full-page {
+    width: 100vw;
+    height: 100vh;
+}
+
+.spinner {
+    background-color: $color-primary;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 20rem;
+        @include card(1rem, 1rem);
+
+        &--image {
+            width: 60%;
+        }
+    }
+}

@@ -1,0 +1,133 @@
+.order {
+    min-height: 100vh;
+
+    &__title {
+        font-size: map-get($map: $font-sizes, $key: "xl");
+    }
+
+    &__list-date {
+        text-align: right; 
+    }
+
+    &__list-date-picker {
+        padding: .8rem;
+        outline: none;
+        border: $border-primay;
+        border-radius: $border-radius-primary;
+        background-color: $white-primary;
+
+        &:focus {
+            border-color: $color-primary;
+        }
+    }
+
+    &__list {
+        display: flex;
+        width: 100%;
+        overflow-x: auto;
+        list-style-type: none;
+        padding: 0;
+        padding-bottom: $gutter-vertical-small;
+    }
+
+    &__list-item {
+        flex-shrink: 0;
+        width: 15rem;
+        padding: 1rem;
+        background-color: $white-primary;
+        border-radius: $border-radius-primary;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: all .5s ease;
+
+        &:hover,
+        &:focus {
+            border: $border-primay;
+            color: $color-primary-dark;
+        }
+
+        &:not(:last-child) {
+            margin-right: $gutter-horizontal;
+        }
+
+        &--image {
+            height: 10rem;
+            border-radius: inherit;
+        }
+
+        &--title {
+            margin-right: 4px;
+            margin-bottom: 0; 
+        }
+
+        &--price {
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+
+        &--rate {
+            i {
+                color: $color-gold;
+            }
+            margin-bottom: 0;
+        }
+    }
+
+    &__list-item-title-count {
+        display: flex;
+        align-items: baseline;
+    }
+
+    &__list-item-price-rate {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+
+    // STATUS
+    &__status {
+        font-size: map-get($map: $font-sizes, $key: "md");
+        margin-bottom: $gutter-vertical-small;
+        margin-top: $gutter-vertical-medium;
+    }
+
+    &__delivery {
+        list-style-type: none;
+        padding: 0;
+        @include card(2rem, 0);
+    }
+
+    &__delivery-status {
+        display: flex;
+        align-items: baseline;
+        font-size: map-get($map: $font-sizes, $key: "sm");
+        position: relative;
+
+        &:not(:last-child) {
+            margin-bottom: $gutter-vertical;
+
+            &::after {
+                content: "\f142";
+                font-family: "Font Awesome 5 Free";
+                font-weight: 900;
+                width: 3rem;
+                position: absolute;
+                text-align: center;
+                color: $color-primary-dark;
+                top: 120%;
+            }
+        }
+
+        &--icon {
+            margin-right: $gutter-horizontal;
+            color: $color-primary-dark;
+            background-color: rgba($color-primary-dark, .2);
+            width: 3rem;
+            height: 3rem;
+            border-radius: $border-radius-primary;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

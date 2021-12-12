@@ -1,0 +1,37 @@
+// COLOURS
+$body-base: #eeecec;
+$white-primary: #fff;
+$color-primary: #4FC4F0;
+$color-primary-dark: darken($color-primary, 20%);
+$color-dark: #000;
+$color-dark-1: lighten($color-dark, 20%);
+$color-dark-2: lighten($color-dark, 40%);
+$color-red-light: #FEE2E2;
+$color-red-dark: #EF84BA;
+$color-red-mild: lighten(red, 5%);
+$color-secondary: #FF9900;
+$color-gold: #FFD700;
+$color-green: #76DB99;
+$color-green-2: #B7EA83;
+
+// BORDERS
+$border-radius-primary: .6rem;
+
+$border-primay: 1px solid $color-primary-dark;
+
+// SPACING
+$body-max-width: 102.4rem; //1024px
+$gutter-horizontal-small: .5rem;
+$gutter-horizontal: 2rem;
+$gutter-vertical-small: .5rem;
+$gutter-vertical: 3rem;
+$gutter-vertical-medium: 4rem;
+$gutter-vertical-large: 8rem;
+
+// FONT-SIZES
+$font-sizes: (
+    "xsm": 1rem,
+    "sm": 1.6rem,
+    "md": 2rem,
+    "xl": 3rem
+);
