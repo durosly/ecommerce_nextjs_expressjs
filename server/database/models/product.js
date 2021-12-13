@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
   Product.beforeCreate((product, _) => {
     product.id = uuidv4();
     return product;
-});
+  });
 
   return Product;
 };

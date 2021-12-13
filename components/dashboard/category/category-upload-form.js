@@ -1,29 +1,40 @@
+import { useState } from 'react'
 import CategoryUploadForm from '../forms/category-upload-form'
 import SpecialCategoryUploadForm from '../forms/special-category-upload-form'
 
 function CategoryUpload() {
+    const [tab, setTab] = useState("#pills-home")
+
+    function handleClick(e) {
+        e.preventDefault()
+
+        const href = e.target.hash
+
+        setTab(href)
+
+    }
 
     return (
         <div className="row">
             <div className="col-12 mt-5">
                 {/* <!-- tab start --> */}
-                <div class="col-lg-6 mt-5">
-                    <div class="card">
-                        <div class="card-body">
+                <div className="col-lg-6 mt-5">
+                    <div className="card">
+                        <div className="card-body">
                             <h4 className="header-title">Create new category</h4>
-                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Regular</a>
+                            <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li className="nav-item">
+                                    <a onClick={handleClick} className={`nav-link ${tab === "#pills-home" && "active"}`} id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Regular</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Special</a>
+                                <li className="nav-item">
+                                    <a onClick={handleClick} className={`nav-link ${tab === "#pills-profile" && "active"}`} id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Special</a>
                                 </li>
                             </ul>
-                            <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <div className="tab-content" id="pills-tabContent">
+                                <div className={`tab-pane fade ${tab === "#pills-home" && "show active"}`} role="tabpanel" aria-labelledby="pills-home-tab">
                                     <CategoryUploadForm />
                                 </div>
-                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div className={`tab-pane fade ${tab === "#pills-profile" && "show active"}`} id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                                     <SpecialCategoryUploadForm />
                                 </div>
                             </div>

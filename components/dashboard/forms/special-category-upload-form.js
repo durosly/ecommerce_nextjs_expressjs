@@ -5,7 +5,8 @@ import { useDispatch } from 'react-redux'
 
 const initialState = {
     name: "",
-    desc: ""
+    desc: "",
+    type: "specific"
 }
 
 function SpecialCategoryUploadForm() {
@@ -54,50 +55,72 @@ function SpecialCategoryUploadForm() {
                 />
             </div>
             <div className="form-group">
-                <textarea 
-                    name="desc" 
-                    id="desc" 
-                    cols="30" 
-                    rows="3" 
-                    className="form-control" 
-                    placeholder="A short description..."
-                    value={fields.desc}
-                    onChange={e => setFields({...fields, [e.target.name]: e.target.value})}
-                    disabled={isLoading}
-                ></textarea>
-            </div>
-            <div className="form-group">
                 <p className="font-weight-bold">Type</p>
                 <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio" name="type" id="specific" value="specific" />
-                    <label className="form-check-label" htmlFor="specific">Specific</label>
+                    <input 
+                        className="form-check-input" 
+                        type="radio" 
+                        name="type" 
+                        id="specific" 
+                        value="specific" 
+                        checked={fields.type === 'specific'} 
+                        onChange={e => setFields({...fields, [e.target.name]: e.target.value})}
+                        disabled={isLoading}
+                    />
+                    <label className="form-check-label" htmlFor="specific">specific</label>
                 </div>
                 <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio" name="type" id="price" value="price" />
-                    <label className="form-check-label" htmlFor="price">Price</label>
+                    <input 
+                        className="form-check-input" 
+                        type="radio" 
+                        name="type" 
+                        id="price" 
+                        value="price" 
+                        checked={fields.type === 'price'} 
+                        onChange={e => setFields({...fields, [e.target.name]: e.target.value})}
+                        disabled={isLoading}
+                    />
+                    <label className="form-check-label" htmlFor="price">price</label>
                 </div>
                 <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio" name="type" id="discount" value="discount" />
-                    <label className="form-check-label" htmlFor="discount">Discount</label>
+                    <input 
+                        className="form-check-input" 
+                        type="radio" 
+                        name="type" 
+                        id="discount" 
+                        value="discount" 
+                        checked={fields.type === 'discount'} 
+                        onChange={e => setFields({...fields, [e.target.name]: e.target.value})}
+                        disabled={isLoading}
+                    />
+                    <label className="form-check-label" htmlFor="discount">discount</label>
                 </div>
             </div>
-            <div className="form-group">
-                <p className="font-weight-bold">Range</p>
-                <div>
-                    <label htmlFor="min">Minimum</label>
-                    <input className="form-control" type="number" name="min_range" id="min" />
-                </div>
-                <div>
-                    <label htmlFor="max">Maximum</label>
-                    <input className="form-control" type="number" name="max_range" id="max" />
-                </div>
-            </div>
-            <div className="form-group">
-                <input className="form-control" type="search" name="search" id="search" placeholder="Search product by id, name and category" />
-            </div>
-            <div className="form-group">
-                product selected is to be displayed here
-            </div>
+            {
+                fields.type && fields.type === "specific" ? (
+                    <>
+                        <div className="form-group">
+                            <input className="form-control" type="search" name="search" id="search" placeholder="Search product by id, name and category" />
+                        </div>
+                        <div className="form-group">
+                            product selected is to be displayed here
+                        </div>
+                    </>
+                ) : (
+                    <div className="form-group">
+                        <p className="font-weight-bold">Range</p>
+                        <div>
+                            <label htmlFor="min">Minimum</label>
+                            <input className="form-control" type="number" name="min_range" id="min" />
+                        </div>
+                        <div>
+                            <label htmlFor="max">Maximum</label>
+                            <input className="form-control" type="number" name="max_range" id="max" />
+                        </div>
+                    </div>
+                )
+            }
+            
             <button className="btn btn-primary" type="submit" disabled={isLoading}>
                 {
                     isLoading ? (
