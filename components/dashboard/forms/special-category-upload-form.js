@@ -2,11 +2,15 @@ import { useState } from 'react'
 import { useToasts } from 'react-toast-notifications'
 import Loader from 'react-loader-spinner'
 import { useDispatch } from 'react-redux'
+import SpecificDataEntry from '../category/special/specific'
 
 const initialState = {
     name: "",
     desc: "",
-    type: "specific"
+    type: "specific",
+    to: null,
+    from: null,
+    item: []
 }
 
 function SpecialCategoryUploadForm() {
@@ -98,14 +102,7 @@ function SpecialCategoryUploadForm() {
             </div>
             {
                 fields.type && fields.type === "specific" ? (
-                    <>
-                        <div className="form-group">
-                            <input className="form-control" type="search" name="search" id="search" placeholder="Search product by id, name and category" />
-                        </div>
-                        <div className="form-group">
-                            product selected is to be displayed here
-                        </div>
-                    </>
+                    <SpecificDataEntry />
                 ) : (
                     <div className="form-group">
                         <p className="font-weight-bold">Range</p>
