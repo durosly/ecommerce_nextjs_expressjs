@@ -2,9 +2,10 @@ import { useState } from 'react'
 
 const list = ["nice", "niceto", "friend", "go", "golang", "golandy"]
 
-function SpecificDataEntry() {
+function SpecificDataEntry( props ) {
+    const { fields, setFields} = props
+    const { items } = fields
     const [search, setSearch] = useState("")
-    const [products, setProducts] = useState([])
     return (
         <>
             <div className="form-group">
@@ -25,7 +26,7 @@ function SpecificDataEntry() {
                         list.map(item => {
                             if (item.includes(search)) {
                                 return (
-                                    <li className="list-group-item list-group-item-action" onClick={() => setProducts([...products, item])}>{ item }</li>
+                                    <li className="list-group-item list-group-item-action" onClick={() => setFields({ ...fields, items: [...items, { id: Math.random(), name: item }]})}>{ item }</li>
                                 )
                             }
                         })
@@ -37,10 +38,10 @@ function SpecificDataEntry() {
             <h4>Added</h4>
             <ul className="list-group mb-3">
                 {
-                    products.map(p => (
+                    items.map(item => (
 
                         <li className="list-group-item d-flex justify-between align-items-center">
-                            <p className="product-name">{ p }</p>
+                            <p className="product-name">{ item.name }</p>
                             <button className="btn btn-danger">&times;</button>
                         </li>
                     ))

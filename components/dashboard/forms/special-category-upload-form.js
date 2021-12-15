@@ -10,7 +10,7 @@ const initialState = {
     type: "specific",
     to: null,
     from: null,
-    item: []
+    items: []
 }
 
 function SpecialCategoryUploadForm() {
@@ -102,7 +102,7 @@ function SpecialCategoryUploadForm() {
             </div>
             {
                 fields.type && fields.type === "specific" ? (
-                    <SpecificDataEntry />
+                    <SpecificDataEntry fields={fields} setFields={setFields}  />
                 ) : (
                     <div className="form-group">
                         <p className="font-weight-bold">Range</p>
