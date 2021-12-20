@@ -1,11 +1,44 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import useSWR from 'swr'
+import Loader from 'react-loader-spinner'
 
-const list = ["nice", "niceto", "friend", "go", "golang", "golandy"]
+const fetcher = url => fetch(url).then(r => r.json())
 
 function SpecificDataEntry( props ) {
+    const [offset, setOffset] = useState(0)
     const { fields, setFields} = props
     const { items } = fields
     const [search, setSearch] = useState("")
+    const [suggestions, setSuggestions] = useState([])
+    const { data, error } = useSWR((search && search.trim() != "") ? `/admin/product/search?query=${search}&offset=${offset}` : null, fetcher)
+    useEffect(() => {
+        if(!error && data) {
+
+            const { status, products } = data
+            if(status === true) {
+                setSuggestions(products)
+            } else {
+                setSuggestions([])
+            }
+        } else {
+            setSuggestions([])
+        }
+
+    }, [data])
+
+    function addToList(item) {
+        // unique values only
+        setFields({ ...fields, items: [...new Set([...items, item])]})
+        // empty search fields
+        setSearch("")
+    }
+
+    function removeItem(e, id) {
+        e.preventDefault()
+
+        const newItem = items.filter(item => item.id !== id)
+        setFields({ ...fields, items: newItem})
+    }
     return (
         <>
             <div className="form-group">
@@ -21,14 +54,14 @@ function SpecificDataEntry( props ) {
             </div>
             <ul className="list-group search-dropdown mb-3">
                 {
-                    search && search.trim() !== "" && (
+                    (search && search.trim() != "") && !error && !data ? (
+                        <Loader color='#000' type='TailSpin' height={14} />
+                    ) : (
                         
-                        list.map(item => {
-                            if (item.includes(search)) {
-                                return (
-                                    <li className="list-group-item list-group-item-action" onClick={() => setFields({ ...fields, items: [...items, { id: Math.random(), name: item }]})}>{ item }</li>
-                                )
-                            }
+                        suggestions.map(item => {
+                            return (
+                                <li key={item.id} className="list-group-item list-group-item-action" onClick={ () => addToList(item) }>{ item.name }</li>
+                            )
                         })
                         
                     )
@@ -40,9 +73,9 @@ function SpecificDataEntry( props ) {
                 {
                     items.map(item => (
 
-                        <li className="list-group-item d-flex justify-between align-items-center">
+                        <li key={item.id} className="list-group-item d-flex justify-between align-items-center">
                             <p className="product-name">{ item.name }</p>
-                            <button className="btn btn-danger">&times;</button>
+                            <button className="btn btn-danger" onClick={e => removeItem(e, item.id)}>&times;</button>
                         </li>
                     ))
                 }

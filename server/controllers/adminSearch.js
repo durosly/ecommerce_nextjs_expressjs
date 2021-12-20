@@ -1,6 +1,12 @@
 const sequelize = require("../database")
-const { DataTypes, Op } = require("sequelize")
+const { DataTypes, Op, col } = require("sequelize")
 const Product = require("../database/models/product")(sequelize, DataTypes)
+const ProductCategory = require("../database/models/productcategory")(sequelize, DataTypes)
+
+// relationship
+Product.belongsTo(ProductCategory, {
+    foreignKey: "productCategoryId"
+})
 
 module.exports = async (req, res) => {
     const { query } = req.query
@@ -9,13 +15,28 @@ module.exports = async (req, res) => {
 
         const products = await Product.findAll({
             where: {
-                name: {
-                    [Op.like]: `%${query ? query : ""}%`
-                }
+                [Op.or] : [
+                    {
+                        name: {
+                            [Op.like]: `%${query ? query : ""}%`
+                        }
+                    },
+                    {
+                        id: {
+                            [Op.like]: `%${query ? query : ""}%`
+                        }
+                    }, 
+                    {
+                        '$ProductCategory.name$': {
+                            [Op.like]: `%${query ? query : ""}%`
+                        }
+                    }
+                ]
             },
             limit: 10,
             attributes: ["id", "name"],
-            order: ["name", "ASC"]
+            order: ["name"],
+            include: { model: ProductCategory, attributes: [ ] }
         })
     
         if(products.length > 0) {

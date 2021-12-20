@@ -20,6 +20,7 @@ const adminUpdateProductQuantity = require("../controllers/adminUpdateProductQua
 const adminUpdateProductDiscount = require("../controllers/adminUpdateProductDiscount")
 const adminUpdateProductPrice = require("../controllers/adminUpdateProductPrice")
 const adminDeleteProduct = require("../controllers/adminDeleteProduct")
+const adminSearch = require("../controllers/adminSearch")
 
 // ROUTERS HANDLERS
 const router = Router()
@@ -59,6 +60,13 @@ router.post("/category", session, sessionAdminExit, createCategoryController)
  * @access PRIVATE
  */
  router.delete("/category", session, sessionAdminExit, isSuperUser, adminDeleteCategoryContoller)
+
+ /**
+  * @route /admin/product/search
+  * @method GET
+  * @access PRIVATE
+  */
+ router.get("/product/search", session, sessionAdminExit, adminSearch)
 
 /**
  * @route /admin/product
