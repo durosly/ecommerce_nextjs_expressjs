@@ -14,14 +14,10 @@ module.exports = async (req, res) => {
         let category = await ProductCategory.findOne({ where: { name: name.toLowerCase() } })
         if(category) return res.json({ status: false, message: "Category already exist" })
         category = await sequelize.transaction(async (t) => {
-            const folder = path.join(__dirname, '../', '../', 'public', 'assets', 'images', 'products', name.toLowerCase())
             const c = await ProductCategory.create({
                 name: name.toLowerCase(),
                 desc
             }, { transaction: t })
-            if(!fs.existsSync(folder)){
-                fs.mkdirSync(folder)
-            }
 
             return c
         })
