@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import useSWR from 'swr'
 import Loader from 'react-loader-spinner'
+import { useToasts } from 'react-toast-notifications'
 
 const fetcher = url => fetch(url).then(r => r.json())
 
 function SpecificDataEntry( props ) {
+    const { addToast } = useToasts()
     const [offset, setOffset] = useState(0)
     const { fields, setFields} = props
     const { items } = fields
@@ -27,10 +29,15 @@ function SpecificDataEntry( props ) {
     }, [data])
 
     function addToList(item) {
-        // unique values only
-        setFields({ ...fields, items: [...new Set([...items, item])]})
-        // empty search fields
-        setSearch("")
+        // check if list is full
+        if(fields.items.length < 6) {
+            // unique values only
+            setFields({ ...fields, items: [...new Set([...items, item])]})
+            // empty search fields
+            setSearch("")
+        } else {
+            addToast("Can't add more than 6 items", { appearance: "warning"})
+        }
     }
 
     function removeItem(e, id) {
@@ -57,12 +64,16 @@ function SpecificDataEntry( props ) {
                     (search && search.trim() != "") && !error && !data ? (
                         <Loader color='#000' type='TailSpin' height={14} />
                     ) : (
-                        
-                        suggestions.map(item => {
-                            return (
-                                <li key={item.id} className="list-group-item list-group-item-action" onClick={ () => addToList(item) }>{ item.name }</li>
-                            )
-                        })
+                        suggestions.length > 0 ? (
+
+                            suggestions.map(item => {
+                                return (
+                                    <li key={item.id} className="list-group-item list-group-item-action" onClick={ () => addToList(item) }>{ item.name }</li>
+                                )
+                            })
+                        ) : (
+                            (search && search.trim() != "")  && <li className='text-danger'>No record found</li>
+                        )
                         
                     )
                 }

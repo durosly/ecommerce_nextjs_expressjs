@@ -27,14 +27,14 @@ function SpecialCategoryUploadForm() {
             const response = await addCategoryHandler(fields)
             const data = await response.json()
 
-            if(data.status) {
-                dispatch(addToCategories(data.category))
-                addToast(data.message, { appearance: "success" })
-                setFields(initialState)
-                setIsLoading(false)
-            } else {
-                throw new Error(data.message)
-            }
+            // if(data.status) {
+            //     dispatch(addToCategories(data.category))
+            //     addToast(data.message, { appearance: "success" })
+            //     setFields(initialState)
+            //     setIsLoading(false)
+            // } else {
+            //     throw new Error(data.message)
+            // }
 
         } catch(error) {
             addToast(error.message, { appearance: "error" })
