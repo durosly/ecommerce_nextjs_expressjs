@@ -1,5 +1,3 @@
-const fs = require("fs")
-const path = require("path")
 const sequelize = require("../database")
 const { DataTypes } = require("sequelize")
 const ProductCategory = require("../database/models/productcategory")(sequelize, DataTypes)
