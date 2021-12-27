@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   SpecialCategory.init({
     title: DataTypes.STRING,
-    type: DataTypes.ENUM,
+    type: DataTypes.ENUM("specific", "price", "discount"),
     from: DataTypes.INTEGER,
     to: DataTypes.INTEGER
   }, {

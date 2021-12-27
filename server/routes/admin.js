@@ -3,6 +3,7 @@ const { Router } = require("express")
 // MIDDLEWARE
 const session = require("../middleware/session")
 const sessionAdminExit = require("../middleware/sessionAdminExist")
+const specialCategoryValidationMiddleware = require("../middleware/specialCategoryValidationMiddleware")
 const isSuperUser = require("../middleware/isSuperUser")
 
 //CONTROLLERS
@@ -11,6 +12,7 @@ const createCategoryController = require("../controllers/createCategoryControlle
 const adminGetCategoryController = require("../controllers/adminGetCategoryController")
 const adminUpdateCategoryNameController = require("../controllers/adminUpdateCategoryNameController")
 const adminDeleteCategoryContoller = require("../controllers/adminDeleteCategoryController")
+const createSpecialCategoryController = require("../controllers/createSpecialCategoryController")
 const adminCreateProduct = require("../controllers/adminCreateProduct")
 const adminGetProducts = require("../controllers/adminGetProducts")
 const adminGetProduct = require("../controllers/adminGetProduct")
@@ -60,6 +62,13 @@ router.post("/category", session, sessionAdminExit, createCategoryController)
  * @access PRIVATE
  */
  router.delete("/category", session, sessionAdminExit, isSuperUser, adminDeleteCategoryContoller)
+
+/**
+ * @route /admin/special-category
+ * @method POST
+ * @access PRIVATE
+ */
+ router.post("/special-category", specialCategoryValidationMiddleware, session, sessionAdminExit, createSpecialCategoryController)
 
  /**
   * @route /admin/product/search

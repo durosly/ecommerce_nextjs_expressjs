@@ -3,10 +3,10 @@ import { useToasts } from 'react-toast-notifications'
 import Loader from 'react-loader-spinner'
 import { useDispatch } from 'react-redux'
 import SpecificDataEntry from '../category/special/specific'
+import addSpecialCategoryHandler from '../../../form-handlers/admin/add-special-category-handler'
 
 const initialState = {
     name: "",
-    desc: "",
     type: "specific",
     to: null,
     from: null,
@@ -24,17 +24,17 @@ function SpecialCategoryUploadForm() {
         e.preventDefault()
         setIsLoading(true)
         try {
-            const response = await addCategoryHandler(fields)
+            const response = await addSpecialCategoryHandler(fields)
             const data = await response.json()
 
-            // if(data.status) {
-            //     dispatch(addToCategories(data.category))
-            //     addToast(data.message, { appearance: "success" })
-            //     setFields(initialState)
-            //     setIsLoading(false)
-            // } else {
-            //     throw new Error(data.message)
-            // }
+            if(data.status) {
+                //dispatch(addToCategories(data.category))
+                addToast(data.message, { appearance: "success" })
+                setFields(initialState)
+                setIsLoading(false)
+            } else {
+                throw new Error(data.message)
+            }
 
         } catch(error) {
             addToast(error.message, { appearance: "error" })
@@ -108,11 +108,25 @@ function SpecialCategoryUploadForm() {
                         <p className="font-weight-bold">Range</p>
                         <div>
                             <label htmlFor="min">Minimum</label>
-                            <input className="form-control" type="number" name="min_range" id="min" />
+                            <input 
+                                className="form-control" 
+                                type="number" 
+                                name="from" 
+                                id="min"  
+                                value={fields.from ? fields.from : ""}
+                                onChange={e => setFields({...fields, [e.target.name]: e.target.value})}
+                            />
                         </div>
                         <div>
                             <label htmlFor="max">Maximum</label>
-                            <input className="form-control" type="number" name="max_range" id="max" />
+                            <input 
+                                className="form-control" 
+                                type="number" 
+                                name="to" 
+                                id="max" 
+                                value={fields.to ? fields.to : ""}
+                                onChange={e => setFields({...fields, [e.target.name]: e.target.value})}
+                            />
                         </div>
                     </div>
                 )
