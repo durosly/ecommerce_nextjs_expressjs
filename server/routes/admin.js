@@ -11,8 +11,11 @@ const adminLoginController = require("../controllers/adminLoginController")
 const createCategoryController = require("../controllers/createCategoryController")
 const adminGetCategoryController = require("../controllers/adminGetCategoryController")
 const adminUpdateCategoryNameController = require("../controllers/adminUpdateCategoryNameController")
+const adminUpdateSpecialCategoryNameController = require("../controllers/adminUpdateSpecialCategoryNameController")
 const adminDeleteCategoryContoller = require("../controllers/adminDeleteCategoryController")
+const adminDeleteSpecialCategoryContoller = require("../controllers/adminDeleteSpecialCategoryController")
 const createSpecialCategoryController = require("../controllers/createSpecialCategoryController")
+const getSpecialCategoryController = require("../controllers/getSpecialCategoryController")
 const adminCreateProduct = require("../controllers/adminCreateProduct")
 const adminGetProducts = require("../controllers/adminGetProducts")
 const adminGetProduct = require("../controllers/adminGetProduct")
@@ -69,6 +72,27 @@ router.post("/category", session, sessionAdminExit, createCategoryController)
  * @access PRIVATE
  */
  router.post("/special-category", specialCategoryValidationMiddleware, session, sessionAdminExit, createSpecialCategoryController)
+
+/**
+ * @route /admin/special-category
+ * @method GET
+ * @access PRIVATE
+ */
+ router.get("/special-category", session, sessionAdminExit, getSpecialCategoryController)
+
+/**
+ * @route /admin/special-category
+ * @method PUT
+ * @access PRIVATE
+ */
+ router.put("/special-category", session, sessionAdminExit, adminUpdateSpecialCategoryNameController)
+
+/**
+ * @route /admin/special-category
+ * @method DELETE
+ * @access PRIVATE
+ */
+ router.delete("/special-category", session, sessionAdminExit, adminDeleteSpecialCategoryContoller)
 
  /**
   * @route /admin/product/search

@@ -27,14 +27,7 @@ module.exports = async (req, res) => {
                 }
             }, { transaction: t })
 
-            const folder = path.join(__dirname, "../", "../", "public", "assets", "images", "products", category.name)
-            if(fs.existsSync(folder)) {
-                fs.rm(folder, { recursive: true }, () => {
-                    res.json({ status: true, message: "Category deleted" })
-                })
-            } else {
-                res.json({ status: true, message: "Category deleted" })
-            }
+            res.json({ status: true, message: "Category deleted" })
 
         })
 

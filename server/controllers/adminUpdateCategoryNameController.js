@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     try {
         if(!id || !name || !newName) return res.json({ status: false, message: "Invalid request. Please, check input and try again." })
         
-        await ProductCategory.update({ name: name.toLowerCase() }, { where: { id } })
+        await ProductCategory.update({ name: newName.toLowerCase() }, { where: { id } })
 
         res.json({ status: true, message: "update successful" })
 

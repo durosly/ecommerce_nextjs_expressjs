@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { withIronSession } from 'next-iron-session'
 import config from 'config'
 import { useToasts } from 'react-toast-notifications'
-import { setCategories } from '../../features/dashboard/dashboardSlice'
+import { setCategories, setSpecialCategories } from '../../features/dashboard/dashboardSlice'
 import CategoryTable from '../../components/dashboard/category/category-table'
 import CategoryUpload from '../../components/dashboard/category/category-upload-form'
 import DashboardLayout from '../../components/dashboard/layout/dashboard-layout'
@@ -13,6 +13,9 @@ function Categories() {
     const dispatch = useDispatch()
     const { addToast } = useToasts()
     const [categoryLoading, setCategoryLoading] = useState(false)
+    const [spcialCategoryLoading, setSpecialCategoryLoading] = useState(false)
+
+    // load regular categories
     useEffect(() => {
         async function loadCategories() {
             try {
@@ -36,12 +39,36 @@ function Categories() {
         loadCategories()
     }, [])
 
+    // load special categories
+    useEffect(() => {
+        async function loadSpecialCategories() {
+            try {
+                setSpecialCategoryLoading(true)
+                const response = await fetch("/admin/special-category")
+                const data = await response.json()
+
+                if(data.status) {
+                   dispatch(setSpecialCategories(data.categories))
+                   setSpecialCategoryLoading(false)
+                } else {
+                    throw new Error("Something went wrong")
+                }
+
+            } catch(error) {
+                setSpecialCategoryLoading(false)
+                addToast(error.message, { appearance: "error" })
+            }
+        }
+
+        loadSpecialCategories()
+    }, [])
+
     return (
         <DashboardLayout>
             <Head>
                 <title>Categories - Safe plaze</title>
             </Head>
-            <CategoryTable status={categoryLoading} />
+            <CategoryTable categoryLoading={categoryLoading} spcialCategoryLoading={spcialCategoryLoading} />
             <CategoryUpload />
         </DashboardLayout>          
     )
