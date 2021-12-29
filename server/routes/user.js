@@ -13,6 +13,8 @@ const loginController = require("../controllers/loginController")
 const profileController = require("../controllers/profileController")
 const profileUpdateController = require("../controllers/profileUpdateController")
 const getCategory = require("../controllers/getCategory")
+const getSpecialCategoryController = require("../controllers/getSpecialCategoryController")
+const getSpecialCategoryProductsController = require("../controllers/getSpecialCategoryProductsController")
 const getProductOfCategory = require("../controllers/getProductOfCategory")
 const getProduct = require("../controllers/getProduct")
 
@@ -43,6 +45,12 @@ router.get("/products/category/:categoryId", getProductOfCategory)
 
 // get a particular product info
 router.get("/product/:id", getProduct)
+
+// get product in special category
+router.get("/special-category/:id/products", getSpecialCategoryProductsController)
+
+// get special category for index page
+router.get("/special-category", getSpecialCategoryController)
 
 
 module.exports = router
