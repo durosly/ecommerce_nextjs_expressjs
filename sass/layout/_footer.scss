@@ -47,10 +47,17 @@
                 margin-bottom: .5rem;
                 text-transform: capitalize;
                 word-spacing: 2px;
+
+                @include respond (544px) {
+                    text-align: center;
+                    text-decoration: underline;
+                }
             }
 
             &--desc {
                 font-size: map-get($map: $font-sizes, $key: "sm");
+                letter-spacing: 1px;
+                line-height: 2.5rem;
             }
         }
     }

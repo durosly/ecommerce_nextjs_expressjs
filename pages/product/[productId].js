@@ -8,6 +8,7 @@ import useSWR from 'swr'
 import Loader from 'react-loader-spinner'
 import UserLayout from '../../components/userLayout'
 import ProductDisplay from '../../components/product-details/product-display'
+import { setUser } from '../../features/user/userSlice'
 
 const fetcher = (url) => fetch(url).then(res => res.json())
 

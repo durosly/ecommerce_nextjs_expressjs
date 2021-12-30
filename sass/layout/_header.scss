@@ -140,10 +140,14 @@
         }
 
         &--badge {
-            padding: .2rem;
+            display: inline-block;
+            
+            height: 2rem;
+            min-width: 2rem;
             background-color: $color-primary;
             border-radius: 50%;
             color: $body-base;
+            text-align: center;
         }
 
         @include respond(700px) {
@@ -191,7 +195,7 @@
         min-width: 20rem;
         border: $border-primay;
         border-radius: $border-radius-primary;
-        z-index: 3;
+        z-index: 30;
 
         @include respond(630px) {
             position: fixed;

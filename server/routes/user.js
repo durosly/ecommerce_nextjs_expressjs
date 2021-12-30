@@ -17,6 +17,9 @@ const getSpecialCategoryController = require("../controllers/getSpecialCategoryC
 const getSpecialCategoryProductsController = require("../controllers/getSpecialCategoryProductsController")
 const getProductOfCategory = require("../controllers/getProductOfCategory")
 const getProduct = require("../controllers/getProduct")
+const addToUserCart = require("../controllers/addToUserCart")
+const getUserCart = require("../controllers/getUserCart")
+const deleteFromUserCart = require("../controllers/deleteFromUserCart")
 
 // ROUTERS HANDLERS
 const router = Router()
@@ -51,6 +54,15 @@ router.get("/special-category/:id/products", getSpecialCategoryProductsControlle
 
 // get special category for index page
 router.get("/special-category", getSpecialCategoryController)
+
+// add to cart P.S create middleware for validation
+router.post("/cart/add", session, sessionExit, addToUserCart)
+
+// get all items in user cart
+router.get("/cart", session, sessionExit, getUserCart)
+
+// delete item from cart
+router.delete("/cart/:id", session, sessionExit, deleteFromUserCart)
 
 
 module.exports = router

@@ -1,24 +1,15 @@
-import { useState } from 'react'
 
 function SubscribeFrom () {
-    const [email, setEmail] = useState("")
 
     return (
         <>
             <h4 className="footer__top-right--title">new to safe plaze</h4>
-            <span className="footer__top-right--desc">Subscribe to our newsletter to get market updates.</span>
-            <form action="/subscribe" className="subscribe-form">
-                <input 
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    placeholder="Enter E-mail address" 
-                    className="subscribe-form__input" 
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                />
-                <button type="submit" className="subscribe-form__submit-btn">Subscribe</button>
-            </form>
+            <p className="footer__top-right--desc">
+                Safe plaze is the best online market place for buying and selling products. Exchange of your cryptocurrencies to cash is made easy with safe plaze crypto exchange.
+            </p>
+            <p className="footer__top-right--desc">
+                Signup to get more from safe plaze and join us on our social media platforms to get updates on goods and services as well as give us feedback on your experience.
+            </p>
         </>
     )
 }

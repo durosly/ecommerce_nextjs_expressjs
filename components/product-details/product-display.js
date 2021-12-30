@@ -23,7 +23,7 @@ function ProductDisplay({ product }) {
                     <span className="product__review--rate">4.5</span>
                     <span className="product__review--count">6.1K</span>
                 </div>
-                <ProductDetailsAction id={product.id} />
+                <ProductDetailsAction id={ product.id } />
             </div>
         </section>
     )

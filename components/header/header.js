@@ -1,10 +1,12 @@
+import { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSelector, useDispatch } from 'react-redux'
+import { useToasts } from 'react-toast-notifications'
 import { selectUserEmail } from '../../features/user/userSlice'
 import { toggleMenu, selectMenuDisplay } from '../../features/menu/menuSlice'
 import { toggleSearch, hideSearch, selectSearchDisplay } from '../../features/search/searchSlice'
-import { selectNumberOfItemsInCart } from '../../features/cart/cartSlice'
+import { selectNumberOfItemsInCart, setUpCart } from '../../features/cart/cartSlice'
 import logo from "../../public/assets/images/logo/logo-top-transparent.png"
 import Dropdown from './Dropdown'
 import Search from './Search'
@@ -12,11 +14,39 @@ import Search from './Search'
 function Header() {
     // const [showDropdown, setShowDropdown] = useState(false)
     const dispatch = useDispatch()
+    const { addToast } = useToasts()
     const menuDisplay = useSelector(selectMenuDisplay)
     const searchDisplay = useSelector(selectSearchDisplay)
     const userEmail = useSelector(selectUserEmail)
     const cartCount = useSelector(selectNumberOfItemsInCart)
-    console.log(cartCount > 0)
+
+    // laod cart from db if user is logged in
+    useEffect(() => {
+        async function getUserCart() {
+
+            if(userEmail) {
+                try {
+                    const response = await fetch("/user/cart")
+    
+                    const data = await response.json()
+    
+                    const { status, message, cartItems } = data
+    
+                    if(status === true) {
+                        dispatch(setUpCart(cartItems))
+                    } else {
+                        throw new Error(message)
+                    }
+    
+                } catch(error) {
+                    addToast(error.message, { appearance: "error" })
+                }
+            }
+        }
+
+        getUserCart()
+    })
+    
     return (
         <header className="header">
             <div className="header__container">
@@ -47,14 +77,14 @@ function Header() {
                             <Link href="/profile">
                                 <a className="header__icon header__icon--login">
                                     <i className="fas fa-user-check"></i>
-                                    <span>Profile</span>
+                                    <span id="profile" className="header__icon-text">Profile</span>
                                 </a>
                             </Link>
                         ) : (
                             <Link href="/login">
                                 <a className="header__icon header__icon--login">
                                     <i className="far fa-user"></i>
-                                    <span>Login</span>
+                                    <span id="login" className="header__icon-text">Login</span>
                                 </a>
                             </Link>
                         )
