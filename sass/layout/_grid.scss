@@ -1,6 +1,7 @@
 .container {
     max-width: $body-max-width; //1024px 
     margin: 0 auto; 
+    min-height: 50vh;
 
     @media only screen and (max-width: 1032px) {
         padding: 0 1rem;

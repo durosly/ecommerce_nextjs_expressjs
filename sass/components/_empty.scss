@@ -1,0 +1,12 @@
+.empty {
+    &__illustration {
+        display: block;
+        max-width: 1rem;
+        margin: 0 auto;
+    }
+    &__text {
+        font-size: map-get($map: $font-sizes, $key: "md");
+        text-align: center;
+    }
+
+}

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import Head from 'next/head'
+import Image from 'next/image'
 import { withIronSession } from 'next-iron-session'
 import config from 'config'
 import { useRouter } from 'next/router'
@@ -8,6 +9,8 @@ import useSWR from 'swr'
 import Loader from 'react-loader-spinner'
 import ProductCategoryItem from '../../components/product-category/product-category-item'
 import UserLayout from '../../components/userLayout'
+import { setUser } from '../../features/user/userSlice'
+import emptyStreetIllustration from '../../public/assets/images/illustrations/empty-street.svg'
 
 const fetcher = (url) => fetch(url).then(res => res.json())
 
@@ -49,7 +52,10 @@ function Category({ user }) {
                                         </ul>
                                     </>
                                 ) : (
-                                    <p style={{ color: "red"}}>{ message }</p>
+                                    <div className="empty">
+                                        <Image className='empty__illustration' src={emptyStreetIllustration} />
+                                        <p className='empty__text' style={{ color: "red"}}>{ message }</p>
+                                    </div>
                                 )
                             ) : (
                                 <>
