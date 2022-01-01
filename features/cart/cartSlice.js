@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit'
-const LOCAL_STRORAGE_NAME = "SAFEPLAZE_CART"
+export const LOCAL_STRORAGE_NAME = "SAFEPLAZE_CART"
 
 let storageData = null//JSON.parse(window.localStorage.getItem(LOCAL_STRORAGE_NAME))
 if(typeof window !== "undefined") {

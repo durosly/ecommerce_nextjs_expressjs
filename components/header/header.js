@@ -6,7 +6,7 @@ import { useToasts } from 'react-toast-notifications'
 import { selectUserEmail } from '../../features/user/userSlice'
 import { toggleMenu, selectMenuDisplay } from '../../features/menu/menuSlice'
 import { toggleSearch, hideSearch, selectSearchDisplay } from '../../features/search/searchSlice'
-import { selectNumberOfItemsInCart, setUpCart } from '../../features/cart/cartSlice'
+import { selectNumberOfItemsInCart, setUpCart, LOCAL_STRORAGE_NAME } from '../../features/cart/cartSlice'
 import logo from "../../public/assets/images/logo/logo-top-transparent.png"
 import Dropdown from './Dropdown'
 import Search from './Search'
@@ -20,7 +20,44 @@ function Header() {
     const userEmail = useSelector(selectUserEmail)
     const cartCount = useSelector(selectNumberOfItemsInCart)
 
-    // laod cart from db if user is logged in
+    // load cart from local storage to db if user is logged in
+    useEffect(() => {
+        async function loadToDB() {
+            try {
+
+                const localDB = JSON.parse(window.localStorage.getItem(LOCAL_STRORAGE_NAME))
+                if( localDB && localDB.numberOfItems > 0) {
+    
+                    const response = await fetch("/user/cart/offline", {
+                        method: 'POST',
+                        body: JSON.stringify({ db: localDB }),
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    })
+
+                    const data = await response.json()
+                    const { status, message } = data
+
+                    if(status === true) {
+                        addToast("Offline cart moved online", { appearance: "success" })
+                        window.localStorage.removeItem(LOCAL_STRORAGE_NAME)
+                    } else {
+                        throw new Error(message)
+                    }
+                }
+            } catch(error) {
+                console.log(error)
+            }
+        }
+
+        // fire function is 
+    
+        if(userEmail) loadToDB()
+
+    }, [userEmail])
+
+    // lood cart from db if user is logged in
     useEffect(() => {
         async function getUserCart() {
 

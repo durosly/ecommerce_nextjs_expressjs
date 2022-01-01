@@ -22,6 +22,7 @@ const getUserCart = require("../controllers/getUserCart")
 const deleteFromUserCart = require("../controllers/deleteFromUserCart")
 const increaseCartItemCountController = require("../controllers/increaseCartItemCountController")
 const decreaseCartItemCountController = require("../controllers/decreaseCartItemCountController")
+const addToUserCartFromLocalStorage = require("../controllers/addToUserCartFromLocalStorage")
 
 // ROUTERS HANDLERS
 const router = Router()
@@ -71,6 +72,9 @@ router.put("/cart/:id/increase", session, sessionExit, increaseCartItemCountCont
 
 // decrease item count in cart
 router.put("/cart/:id/decrease", session, sessionExit, decreaseCartItemCountController)
+
+// move local db to online db
+router.post("/cart/offline", session, sessionExit, addToUserCartFromLocalStorage)
 
 
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useToasts } from 'react-toast-notifications'
-import { selectCartItem, addItemToCart, removeItemFromCart, increaseItemQuantity, decreaseItemQuantity } from '../features/cart/cartSlice'
+import { selectCartItem, selectNumberOfItemsInCart, addItemToCart, removeItemFromCart, increaseItemQuantity, decreaseItemQuantity } from '../features/cart/cartSlice'
 import { selectUserId } from '../features/user/userSlice'
 import store from '../app/store'
 
@@ -13,6 +13,7 @@ function useToggleCartStatus(id) {
     const [isLoading, setIsLoading] = useState(false)
     const userId = useSelector(selectUserId)
     const item = selectCartItem(store.getState(), id)
+    const numberOfItems = useSelector(selectNumberOfItemsInCart)
 
     useEffect(() => {
         if(userId) {
@@ -23,6 +24,16 @@ function useToggleCartStatus(id) {
     }, [userId])
 
     useEffect(() => {
+        const item = selectCartItem(store.getState(), id)
+
+        if(item) {
+            setInCart(true)
+        } else {
+            setInCart(false)
+        }
+    }, [numberOfItems])
+
+    useEffect(() => {
         if(item) {
             setInCart(true)
         } else {
@@ -31,7 +42,9 @@ function useToggleCartStatus(id) {
     }, [item])
 
     async function addToCart() {
-        try {
+
+        if(status === true) {
+
             const response = await fetch("/user/cart/add", {
                 method: "POST",
                 body: JSON.stringify({ item: { id, quantity: 1}}),
@@ -41,67 +54,109 @@ function useToggleCartStatus(id) {
             })
 
             const data = await response.json()
+            if(data) {
+                const { status: stat, productId, message } = data
 
-            return data
-        } catch(error) {
-            return false
+                if(stat === true) {
+                    dispatch(addItemToCart({ status, item: { id: productId, quantity: 1 }}))
+                    setInCart(true)
+                    setIsLoading(false)
+                } else {
+                    throw new Error(message)
+                }
+            } else {
+                throw new Error("An error occured when trying to add item to cart")
+            }
+        } else {
+            dispatch(addItemToCart({ status, item: { id, quantity: 1 }}))
+            setInCart(true)
+            setIsLoading(false)
         }
     }
 
     async function removeFromCart() {
-        try {
+
+        if(status === true) {
+                    
+            // update cart for online users
             const response = await fetch(`/user/cart/${ id }`, {
                 method: "DELETE"
             })
 
             const data = await response.json()
-
-            return data
-        } catch(error) {
-            return false
+            if(data) {
+                const { status: stat, message } = data
+                if(stat === true) {
+                    dispatch(removeItemFromCart({ status, id }))
+                    setInCart(false)
+                    setIsLoading(false)
+                } else {
+                    throw new Error(message)
+                }
+            } else {
+                throw new Error("An error occured when trying to remove item from cart")
+            }
+        } else {
+            // update cart for offline users
+            dispatch(removeItemFromCart({ status, id }))
+            setInCart(false)
+            setIsLoading(false)
         }
     }
 
     async function increaseCartItemCount() {
         setIsLoading(true)
-        try {
-            const response = await fetch(`/user/cart/${ id }/increase`, {
-                method: "PUT"
-            })
-            const data = await response.json()
+        if(status === true) {
 
-            if(data.status === true) {
-                dispatch(increaseItemQuantity({ id, status}))
+            try {
+                const response = await fetch(`/user/cart/${ id }/increase`, {
+                    method: "PUT"
+                })
+                const data = await response.json()
+    
+                if(data.status === true) {
+                    dispatch(increaseItemQuantity({ id, status}))
+                    setIsLoading(false)
+                } else {
+                    throw new Error(data.message)
+                }
+    
+    
+            } catch(error) {
+                addToast(error.message, { appearance: "error"})
                 setIsLoading(false)
-            } else {
-                throw new Error(data.message)
             }
 
-
-        } catch(error) {
-            addToast(error.message, { appearance: "error"})
+        } else {
+            dispatch(increaseItemQuantity({ id, status}))
             setIsLoading(false)
         }
     }
 
     async function decreaseCartItemCount() {
         setIsLoading(true)
-        try {
-            const response = await fetch(`/user/cart/${ id }/decrease`, {
-                method: "PUT"
-            })
-            const data = await response.json()
+        if(status === true) {
 
-            if(data.status === true) {
-                dispatch(decreaseItemQuantity({ id, status}))
+            try {
+                const response = await fetch(`/user/cart/${ id }/decrease`, {
+                    method: "PUT"
+                })
+                const data = await response.json()
+    
+                if(data.status === true) {
+                    dispatch(decreaseItemQuantity({ id, status}))
+                    setIsLoading(false)
+                } else {
+                    throw new Error(data.message)
+                }
+    
+    
+            } catch(error) {
+                addToast(error.message, { appearance: "error"})
                 setIsLoading(false)
-            } else {
-                throw new Error(data.message)
             }
-
-
-        } catch(error) {
-            addToast(error.message, { appearance: "error"})
+        } else {
+            dispatch(decreaseItemQuantity({ id, status}))
             setIsLoading(false)
         }
     }
@@ -114,34 +169,11 @@ function useToggleCartStatus(id) {
         try {
 
             if(inCart === true) {
-                const res = await removeFromCart()
-                if(res) {
-                    const { status: stat, message } = res
-                    if(stat === true) {
-                        dispatch(removeItemFromCart({ status, id }))
-                        setInCart(false)
-                        setIsLoading(false)
-                    } else {
-                        throw new Error(message)
-                    }
-                } else {
-                    throw new Error("An error occured when trying to remove item from cart")
-                }
+               
+                await removeFromCart()
+                    
             } else {
-                const res = await addToCart()
-                if(res) {
-                    const { status: stat, productId, message } = res
-    
-                    if(stat === true) {
-                        dispatch(addItemToCart({ status, item: { id: productId, quantity: 1 }}))
-                        setInCart(true)
-                        setIsLoading(false)
-                    } else {
-                        throw new Error(message)
-                    }
-                } else {
-                    throw new Error("An error occured when trying to add item to cart")
-                }
+                await addToCart()
             }
         } catch(error) {
             addToast(error.message, { appearance: "error"})
