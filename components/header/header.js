@@ -45,7 +45,7 @@ function Header() {
         }
 
         getUserCart()
-    })
+    }, [userEmail])
     
     return (
         <header className="header">

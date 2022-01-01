@@ -1,11 +1,26 @@
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Head from 'next/head'
-// import config from 'config'
-// import { withIronSession } from 'next-iron-session'
+import config from 'config'
+import { withIronSession } from 'next-iron-session'
+import commaNumber from 'comma-number'
 import UserLayout from "../components/userLayout"
 import EmptyIllustration from '../components/cart/empty-illustration'
 import ListItem from '../components/cart/list-item'
+import { setUser } from '../features/user/userSlice'
+import { selectCartItems } from '../features/cart/cartSlice'
 
-function Cart() {
+function Cart({ user }) {
+    const dispatch = useDispatch()
+    const [subTotal, setSubTotal] = useState(0)
+    const items = useSelector(selectCartItems)
+
+    useEffect(() => {
+        if(user) {
+            dispatch(setUser(user))
+        }
+    })
+
     return (
         <UserLayout>
             <Head>
@@ -14,25 +29,35 @@ function Cart() {
             <div className="container">
                 <section className="cart">
                     <h2 className="cart__title">Cart</h2>
-                    {/* <EmptyIllustration /> */}
 
-                    <ul className="cart__list">
-                        <ListItem />
-                    </ul>
-                    <hr />
-                    <div className="cart__sub-action">
-                        <p className="cart__sub-total">
-                            <span className="cart__sub-total--label">Sub total: </span>
-                            <span className="cart__sub-total--value">&#8358; 3,000</span>
-                        </p>
-                        <form className="cart__cart-checkout-form" action="/add-to-cart">
-                            <button className="cart__checkout-btn">
-                                <i className="fas fa-luggage-cart"></i>
-                                &nbsp;
-                                checkout
-                            </button>
-                        </form>
-                    </div>
+                    {
+                        items && items.length > 0 ? (
+                            <>
+                                <ul className="cart__list">
+                                    {
+                                        items.map(item => <ListItem key={item.id} item={item} setSubTotal={setSubTotal} />)
+                                    }
+                                </ul>
+                                <hr />
+                                <div className="cart__sub-action">
+                                    <p className="cart__sub-total">
+                                        <span className="cart__sub-total--label">Sub total: </span>
+                                        <span className="cart__sub-total--value">&#8358; { commaNumber(subTotal)}</span>
+                                    </p>
+                                    <form className="cart__cart-checkout-form" action="/add-to-cart">
+                                        <button className="cart__checkout-btn">
+                                            <i className="fas fa-luggage-cart"></i>
+                                            &nbsp;
+                                            checkout
+                                        </button>
+                                    </form>
+                                </div>
+                            </>
+                        ) : (
+                            <EmptyIllustration />
+                        )
+                    }
+
                 </section>
             </div>
             
@@ -42,27 +67,24 @@ function Cart() {
 
 export default Cart
 
-// export const getServerSideProps = withIronSession(
-//     async ({ req, res }) => {
-//         const user = req.session.get("user")
+export const getServerSideProps = withIronSession(
+    async ({ req, res }) => {
+        const user = req.session.get("user")
 
-//         if(user) {
-//             return {
-//                 props: {
-//                     user
-//                 }
-//             }
-//         }
+        if(user) {
+            return {
+                props: {
+                    user
+                }
+            }
+        }
 
-//         return {
-//             redirect: {
-//                 destination: '/login',
-//                 permanent: false,
-//             }
-//         }
+        return {
+            props: { }
+        }
 
-//     }, {
-//         cookieName: config.get("cookie.name"),
-//         password: config.get("cookie.password")
-//     }
-// )
+    }, {
+        cookieName: config.get("cookie.name"),
+        password: config.get("cookie.password")
+    }
+)

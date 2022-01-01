@@ -20,6 +20,8 @@ const getProduct = require("../controllers/getProduct")
 const addToUserCart = require("../controllers/addToUserCart")
 const getUserCart = require("../controllers/getUserCart")
 const deleteFromUserCart = require("../controllers/deleteFromUserCart")
+const increaseCartItemCountController = require("../controllers/increaseCartItemCountController")
+const decreaseCartItemCountController = require("../controllers/decreaseCartItemCountController")
 
 // ROUTERS HANDLERS
 const router = Router()
@@ -63,6 +65,13 @@ router.get("/cart", session, sessionExit, getUserCart)
 
 // delete item from cart
 router.delete("/cart/:id", session, sessionExit, deleteFromUserCart)
+
+// increase item count in cart
+router.put("/cart/:id/increase", session, sessionExit, increaseCartItemCountController)
+
+// decrease item count in cart
+router.put("/cart/:id/decrease", session, sessionExit, decreaseCartItemCountController)
+
 
 
 module.exports = router

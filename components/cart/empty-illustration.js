@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import illustration from '../../public/assets/images/illustrations/undraw_empty_cart_co35.svg'
+import illustration from '../../public/assets/images/illustrations/empty-cart.svg'
 
 function EmptyIllustration() {
     return (

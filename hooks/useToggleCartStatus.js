@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useToasts } from 'react-toast-notifications'
-import { selectCartItem, addItemToCart, removeItemFromCart, selectNumberOfItemsInCart } from '../features/cart/cartSlice'
+import { selectCartItem, addItemToCart, removeItemFromCart, increaseItemQuantity, decreaseItemQuantity } from '../features/cart/cartSlice'
 import { selectUserId } from '../features/user/userSlice'
 import store from '../app/store'
 
@@ -62,6 +62,50 @@ function useToggleCartStatus(id) {
         }
     }
 
+    async function increaseCartItemCount() {
+        setIsLoading(true)
+        try {
+            const response = await fetch(`/user/cart/${ id }/increase`, {
+                method: "PUT"
+            })
+            const data = await response.json()
+
+            if(data.status === true) {
+                dispatch(increaseItemQuantity({ id, status}))
+                setIsLoading(false)
+            } else {
+                throw new Error(data.message)
+            }
+
+
+        } catch(error) {
+            addToast(error.message, { appearance: "error"})
+            setIsLoading(false)
+        }
+    }
+
+    async function decreaseCartItemCount() {
+        setIsLoading(true)
+        try {
+            const response = await fetch(`/user/cart/${ id }/decrease`, {
+                method: "PUT"
+            })
+            const data = await response.json()
+
+            if(data.status === true) {
+                dispatch(decreaseItemQuantity({ id, status}))
+                setIsLoading(false)
+            } else {
+                throw new Error(data.message)
+            }
+
+
+        } catch(error) {
+            addToast(error.message, { appearance: "error"})
+            setIsLoading(false)
+        }
+    }
+
 
     async function handleCartSubmit(e) {
         e.preventDefault()
@@ -106,7 +150,7 @@ function useToggleCartStatus(id) {
 
     }
 
-    return { inCart, addToCart, removeFromCart, handleCartSubmit, isLoading }
+    return { inCart, addToCart, removeFromCart, handleCartSubmit, increaseCartItemCount, decreaseCartItemCount, isLoading }
 }
 
 export default useToggleCartStatus
