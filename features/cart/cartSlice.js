@@ -48,6 +48,9 @@ export const cartSlice = createSlice({
         setUpCart: (state, action) => {
             state.items = action.payload
             state.numberOfItems = action.payload.length
+        },
+        clearCart: () => {
+            return { items: [], numberOfItems: 0 }
         }
     }
 })
@@ -79,7 +82,7 @@ export const selectCartItem = createSelector(
 )
 
 // ACTIONS
-export const { addItemToCart, removeItemFromCart, increaseItemQuantity, decreaseItemQuantity, setUpCart } = cartSlice.actions
+export const { addItemToCart, removeItemFromCart, increaseItemQuantity, decreaseItemQuantity, setUpCart, clearCart } = cartSlice.actions
 
 // REDUCER
 export default cartSlice.reducer

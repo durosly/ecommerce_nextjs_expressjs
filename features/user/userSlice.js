@@ -12,6 +12,9 @@ export const userSlice = createSlice({
         setUser: (state, action) => {
             state.id = action.payload.id
             state.email = action.payload.email
+        },
+        clearUser: () => {
+            return initialState
         }
     }
 })
@@ -21,7 +24,7 @@ export const selectUserEmail = state => state.user.email
 export const selectUserId = state => state.user.id
 
 // ACTIONS
-export const { setUser } = userSlice.actions
+export const { setUser, clearUser } = userSlice.actions
 
 // REDUCER
 export default userSlice.reducer
