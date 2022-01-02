@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useToasts } from 'react-toast-notifications'
 import { selectCartItem, selectNumberOfItemsInCart, addItemToCart, removeItemFromCart, increaseItemQuantity, decreaseItemQuantity } from '../features/cart/cartSlice'
@@ -8,6 +8,7 @@ import store from '../app/store'
 function useToggleCartStatus(id) {
     const dispatch = useDispatch()
     const { addToast } = useToasts()
+    const isUnmounting = useRef(false)
     const [status, setStatus] = useState(false)
     const [inCart, setInCart] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -21,15 +22,19 @@ function useToggleCartStatus(id) {
         } else {
             setStatus(false)
         }
+
+        return () => isUnmounting.current = true
     }, [userId])
 
     useEffect(() => {
-        const item = selectCartItem(store.getState(), id)
-
-        if(item) {
-            setInCart(true)
-        } else {
-            setInCart(false)
+        if(!isUnmounting) {
+            const item = selectCartItem(store.getState(), id)
+    
+            if(item) {
+                setInCart(true)
+            } else {
+                setInCart(false)
+            }
         }
     }, [numberOfItems])
 

@@ -5,9 +5,9 @@ import { useToasts } from 'react-toast-notifications'
 import commmaNumber from 'comma-number'
 import CartListitemAction from './cart-list-item-action'
 
-function ListItem( { item, setSubTotal }) {
+function ListItem( { item, setPrices, prices }) {
     const { addToast } = useToasts()
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [isError, setIsError] = useState(false)
     const [product, setProduct] = useState({})
 
@@ -15,14 +15,15 @@ function ListItem( { item, setSubTotal }) {
         async function loadProduct() {
             setIsLoading(true)
             try {
+                if(!item.id) return  
                 const response = await fetch(`/user/product/${ item.id }`)
                 const data = await response.json()
 
                 if(data.status === true) {
                     const price = data.product.price - (data.product.price * data.product.discount / 100)
-                    const cost = price * item.quantity
+                    //const cost = price * item.quantity
 
-                    setSubTotal(curr => curr + cost)
+                    setPrices(curr => [...new Set([...curr, { id: item.id, price, quantity: item.quantity }]) ])
                     setProduct(data.product)
                     setIsLoading(false)
                 } else {
@@ -37,6 +38,30 @@ function ListItem( { item, setSubTotal }) {
         }
 
         loadProduct()
+    }, [])
+
+    useEffect(() => {
+        //const price = product.price - (product.price * product.discount / 100)
+        
+        const index = prices.findIndex(item => item.id === product.id)
+
+        if(index > -1) {
+            const newPrices = prices
+            newPrices[index].quantity = item.quantity
+            setPrices(newPrices)
+        }
+
+        
+
+    })
+
+    useEffect(() => {
+
+        return () => {
+            const newPrices = prices.filter(item => item.id !== product.id)
+
+            setPrices(newPrices)
+        }
     }, [])
 
     return (

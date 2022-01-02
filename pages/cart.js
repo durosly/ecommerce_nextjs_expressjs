@@ -13,11 +13,23 @@ import { selectCartItems } from '../features/cart/cartSlice'
 function Cart({ user }) {
     const dispatch = useDispatch()
     const [subTotal, setSubTotal] = useState(0)
+    const [prices, setPrices] = useState([])
     const items = useSelector(selectCartItems)
+
+    console.log(items)
 
     useEffect(() => {
         if(user) {
             dispatch(setUser(user))
+        }
+    })
+
+    useEffect(() => {
+        if(prices.length > 0) {
+            const reducer = (prev, curr) => prev + ( curr.price * curr.quantity )
+            const total = prices.reduce(reducer, 0)
+
+            setSubTotal(total)
         }
     })
 
@@ -35,7 +47,7 @@ function Cart({ user }) {
                             <>
                                 <ul className="cart__list">
                                     {
-                                        items.map(item => <ListItem key={item.id} item={item} setSubTotal={setSubTotal} />)
+                                        items.map((item, i) => <ListItem key={item.id || i} item={item} prices={prices} setPrices={setPrices} />)
                                     }
                                 </ul>
                                 <hr />
