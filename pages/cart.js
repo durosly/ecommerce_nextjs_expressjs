@@ -7,6 +7,7 @@ import commaNumber from 'comma-number'
 import UserLayout from "../components/userLayout"
 import EmptyIllustration from '../components/cart/empty-illustration'
 import ListItem from '../components/cart/list-item'
+import CartCheckoutAction from '../components/cart/cart-checkout-action'
 import { setUser } from '../features/user/userSlice'
 import { selectCartItems } from '../features/cart/cartSlice'
 
@@ -31,7 +32,9 @@ function Cart({ user }) {
 
             setSubTotal(total)
         }
-    })
+
+        console.log(subTotal)
+    }, [prices])
 
     return (
         <UserLayout>
@@ -56,13 +59,7 @@ function Cart({ user }) {
                                         <span className="cart__sub-total--label">Sub total: </span>
                                         <span className="cart__sub-total--value">&#8358; { commaNumber(subTotal)}</span>
                                     </p>
-                                    <form className="cart__cart-checkout-form" action="/add-to-cart">
-                                        <button className="cart__checkout-btn">
-                                            <i className="fas fa-luggage-cart"></i>
-                                            &nbsp;
-                                            checkout
-                                        </button>
-                                    </form>
+                                    <CartCheckoutAction />
                                 </div>
                             </>
                         ) : (

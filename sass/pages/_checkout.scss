@@ -1,0 +1,130 @@
+.checkout {
+    min-height: 100vh;
+
+    @include respond(900px) {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    &__title {
+        font-size: map-get($map: $font-sizes, $key: "xl");
+    }
+
+    &__total, &__info, &__payment {
+        @include card($gutter-horizontal, $gutter-vertical);
+    }
+    &__total {
+        margin-bottom: $gutter-vertical;
+    }
+
+    &__subtotal {
+        display: flex;
+        justify-content: space-between;
+        font-size: map-get($map: $font-sizes, $key: "sm");
+
+        &:not(:last-child) {
+            margin-bottom: $gutter-vertical;
+        }
+
+        &:last-child {
+            font-weight: bold;
+        }
+    }
+
+    &__info {
+        input[type="radio"] {
+            display: none;
+        }
+
+        input:checked + label {
+            background-color: rgba($color-primary, .5);
+        } 
+
+        label {
+            display: inline-block;
+            font-size: map-get($map: $font-sizes, $key: "sm");
+            margin-right: $gutter-horizontal;
+            border-radius: $border-radius-primary;
+            background-color: $body-base;
+            padding: 1rem;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba($color-primary, .5);
+            }
+        }
+    }
+
+    &__address-input {
+        margin-top: $gutter-vertical;
+
+        input {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            font-size: map-get($map: $font-sizes, $key: "sm");
+            border-radius: $border-radius-primary;
+            border: 1px solid $color-primary-dark;
+            outline: none;
+            background-color: rgba($color-primary, .2);
+
+            &:focus {
+                background-color: rgba($color-primary, .5);
+            }
+        }
+    }
+
+    // payment area
+
+    &__payment {
+
+        &--title {
+            font-size: map-get($map: $font-sizes, $key: "sm");
+            margin-top: 0;
+        }
+
+        &--list {
+            input[type="radio"] {
+                display: none;
+            }
+
+            input[type="radio"]:checked + &-item {
+                background-color: rgba($color-primary, .5);
+            }
+        }
+
+        &--list-item {
+            display: flex;
+            padding: 1rem;
+            align-items: center;
+            background-color: rgba($color-primary, .2);
+            border-radius: $border-radius-primary;
+            cursor: pointer;
+
+            i {
+                font-size: map-get($map: $font-sizes, $key: "xl");
+                margin-right: $gutter-horizontal;
+                color: $color-primary;
+            }
+
+            // details 
+            .details {
+                &__title {
+                    margin: 0;
+                }
+
+                &__summary {
+                    margin: 0;
+                }
+            }
+
+            &:hover {
+                background-color: rgba($color-primary, .5);
+            }
+
+            &:not(:last-child) {
+                margin-bottom: $gutter-vertical;
+            }
+        }
+    }
+}

@@ -10,6 +10,7 @@ function ListItem( { item, setPrices, prices }) {
     const [isLoading, setIsLoading] = useState(true)
     const [isError, setIsError] = useState(false)
     const [product, setProduct] = useState({})
+    const { quantity } = item
 
     useEffect(() => {
         async function loadProduct() {
@@ -46,14 +47,11 @@ function ListItem( { item, setPrices, prices }) {
         const index = prices.findIndex(item => item.id === product.id)
 
         if(index > -1) {
-            const newPrices = prices
+            const newPrices = [...prices]
             newPrices[index].quantity = item.quantity
             setPrices(newPrices)
         }
-
-        
-
-    })
+    }, [quantity])
 
     useEffect(() => {
 
