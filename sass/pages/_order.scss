@@ -26,8 +26,8 @@
         width: 100%;
         overflow-x: auto;
         list-style-type: none;
-        padding: 0;
-        padding-bottom: $gutter-vertical-small;
+        //padding: 0;
+        padding: 2rem 0;
     }
 
     &__list-item {
@@ -39,6 +39,23 @@
         border: 1px solid transparent;
         cursor: pointer;
         transition: all .5s ease;
+        position: relative;
+
+        &--active {
+            &::after {
+                position: absolute;
+                content: "\f058";
+                font-family: "Font Awesome 5 Free";
+                display: block;
+                font-size: 2rem;
+                background-color: rgba($color-primary-dark, .5);
+                color: rgba($body-base, .5);
+                //opacity: .8;
+                border-radius: 50%;
+                top: 5%;
+                left: 5%;
+            }
+        }
 
         &:hover,
         &:focus {
