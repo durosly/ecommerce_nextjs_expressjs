@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useToasts } from 'react-toast-notifications'
 import Loader from 'react-loader-spinner'
 
-function ProductImage({ product, setProduct }) {
+function ProductImage({ product, setProduct, blurURL, setBlurURL }) {
     const { addToast } = useToasts()
     const [isLoading, setIsLoading] = useState(false)
     const fileRef = useRef(null)
@@ -11,6 +11,7 @@ function ProductImage({ product, setProduct }) {
         fileRef.current.click()
     }
 
+    console.log(blurURL)
     async function handleChange(e) {
         const formData = new FormData()
         formData.append("image", e.target.files[0])
@@ -23,6 +24,7 @@ function ProductImage({ product, setProduct }) {
             const data = await response.json()
             if(data.status === true) {
                 setProduct({...product, image: data.image, updatedAt: data.updatedAt})
+                setBlurURL(data.blurURL)
                 addToast("upload successful", { appearance: "success" })
                 setIsLoading(false)
             } else {
@@ -39,8 +41,22 @@ function ProductImage({ product, setProduct }) {
         <div className="row justify-center">
             <input onChange={handleChange} ref={fileRef} type="file" name="image" id="image" accept="image/*" style={{ display: "none" }} />
             <div className="col-md-6">
-                <Image className="img-fluid" src={`/uploads/products/${product.image}` } layout="responsive" width={20} height={20} />
-                <button disabled={isLoading} onClick={handleClick} type="button" className="btn btn-primary">
+                {
+                    blurURL ? (
+                        <Image 
+                            className="img-fluid" 
+                            src={`/uploads/products/${product.image}` } 
+                            layout="responsive" 
+                            width={20} 
+                            height={20} 
+                            placeholder="blur"
+                            blurDataURL={blurURL}
+                        />
+                    ) : (
+                        <p>Parsing image...</p>
+                    )
+                }
+                <button disabled={isLoading} onClick={handleClick} type="button" className="btn btn-primary mt-2">
                     {
                         isLoading ? (
                             <Loader type="TailSpin" color="#000" height={16} />

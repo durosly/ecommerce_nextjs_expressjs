@@ -46,7 +46,15 @@ function ProductDetailsDisplay({ product, setProduct }) {
                 ) : (
                     isEditing ? (
                         <p>
-                            <textarea autoFocus={true} ref={descRef} onBlur={handleBlur} onChange={e => setChange(e.target.value)} value={change} className="form-control"></textarea>
+                            <textarea 
+                                autoFocus={true} 
+                                ref={descRef} 
+                                onBlur={handleBlur} 
+                                onChange={e => setChange(e.target.value)} 
+                                value={change} 
+                                className="form-control"
+                                rows={6}
+                            ></textarea>
                         </p>
                     ) : (
                         <>

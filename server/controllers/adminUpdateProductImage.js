@@ -2,6 +2,7 @@ const sequelize = require("../database")
 const { DataTypes } = require("sequelize")
 const path = require("path")
 const fs = require("fs")
+const { getPlaiceholder } = require("plaiceholder")
 const Product = require("../database/models/product")(sequelize, DataTypes)
 const CustomError = require("../errors")
 
@@ -53,8 +54,11 @@ module.exports = async (req, res) => {
             })
 
             await image.mv(uploadUrl)
+            //console.log(uploadPath)
 
-            res.json({ status: true, message: "success", image: imageName, updatedAt})
+            const { base64 } = await getPlaiceholder(`/uploads/products/${imageName}`, 22)
+
+            res.json({ status: true, message: "success", image: imageName, updatedAt, blurURL: base64 })
         })
     } catch(error) {
         console.log(error.message)

@@ -26,6 +26,10 @@ const adminUpdateProductDiscount = require("../controllers/adminUpdateProductDis
 const adminUpdateProductPrice = require("../controllers/adminUpdateProductPrice")
 const adminDeleteProduct = require("../controllers/adminDeleteProduct")
 const adminSearch = require("../controllers/adminSearch")
+const adminSetProductDeliveryFee = require("../controllers/adminSetProductDeliveryFee")
+const adminGetStatesForDeliveryFee = require("../controllers/adminGetStatesForDeliveryFee")
+const adminGetDeliveryFees = require("../controllers/adminGetDeliveryFees")
+const adminDeleteDeliveryFee = require("../controllers/adminDeleteDeliveryFee")
 
 // ROUTERS HANDLERS
 const router = Router()
@@ -149,6 +153,34 @@ router.post("/category", session, sessionAdminExit, createCategoryController)
  * @access PRIVATE
  */
  router.put("/product/:id/price", session, sessionAdminExit, adminUpdateProductPrice)
+
+/**
+ * @route /admin/product/:id/delivery-fee-state
+ * @method GET
+ * @access PRIVATE
+ */
+ router.get("/product/:id/delivery-fee-state", session, sessionAdminExit, adminGetStatesForDeliveryFee)
+
+/**
+ * @route /admin/product/:id/delivery-fee
+ * @method POST
+ * @access PRIVATE
+ */
+ router.post("/product/:id/delivery-fee", session, sessionAdminExit, adminSetProductDeliveryFee)
+
+/**
+ * @route /admin/product/:id/delivery-fee
+ * @method GET
+ * @access PRIVATE
+ */
+ router.get("/product/:id/delivery-fee", session, sessionAdminExit, adminGetDeliveryFees)
+
+/**
+ * @route /admin/product/:id/delivery-fee
+ * @method DELETE
+ * @access PRIVATE
+ */
+ router.delete("/product/:id/delivery-fee", session, sessionAdminExit, adminDeleteDeliveryFee)
 
 /**
  * @route /admin/product/:id

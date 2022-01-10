@@ -1,5 +1,6 @@
 const sequelize = require("../database")
 const { DataTypes, col } = require("sequelize")
+const { getPlaiceholder } = require("plaiceholder")
 const Product = require("../database/models/product")(sequelize, DataTypes)
 const ProductInventory = require("../database/models/productinventory")(sequelize, DataTypes)
 const ProductCategory = require("../database/models/productcategory")(sequelize, DataTypes)
@@ -23,7 +24,9 @@ module.exports = async (req, res) => {
 
         if(!product) throw new CustomError("No product found")
 
-        res.json({ status: true, message: "success", product })
+        const { base64 } = await getPlaiceholder(`/uploads/products/${product.image}`, 22)
+
+        res.json({ status: true, message: "success", product, blurURL: base64 })
     } catch(error) {
         let message = "Something went wrong"
         if(error instanceof CustomError) {
