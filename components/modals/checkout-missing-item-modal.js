@@ -8,7 +8,7 @@ function CheckoutMissingItemModal({ setShowModal, missingItemsIds }) {
                 <button className="modal__close-btn" onClick={() => setShowModal(false)}>&times;</button>
                 <div className="modal__cart-item-container">
                     <div className="modal__notice modal__notice--info">
-                        Remove item from cart or choice a different location
+                        Delivery fee not set for selected location. <br />Remove item from cart or choice a different location
                     </div>
                     <ul className="cart__list cart__list--checkout-modal">
                         {

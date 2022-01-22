@@ -43,11 +43,16 @@ function CheckoutTotal({ state, addressChoice, subtotal, setSubtotal, isLoadingS
                 const data = await response.json()
 
                 const { status, message, fees } = data
-                console.log(data)
+
                 if(status === true) {
                     if(status === true) {
                         if(cartItems.length > 0) {
                             if(cartItems.length === fees.length) {
+                                console.log(fees)
+                                const feesReducer = (prev, curr) => prev + curr.price
+                                const feesTotal = fees.reduce(feesReducer, 0)
+                                //console.log(feesTotal)
+                                setDeliveryFee(feesTotal)
                                 setIsPayable(true)
                                 setIsLoadingDeliveryFee(false)
                             } else {
