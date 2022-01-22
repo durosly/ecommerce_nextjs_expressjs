@@ -23,6 +23,10 @@ const deleteFromUserCart = require("../controllers/deleteFromUserCart")
 const increaseCartItemCountController = require("../controllers/increaseCartItemCountController")
 const decreaseCartItemCountController = require("../controllers/decreaseCartItemCountController")
 const addToUserCartFromLocalStorage = require("../controllers/addToUserCartFromLocalStorage")
+const getUserSubtotalController = require("../controllers/getUserSubtotalController")
+const getStates = require("../controllers/getStates")
+const getuserCartDeliveryFee = require("../controllers/getuserCartDeliveryFee")
+const getUserProfileState = require("../controllers/getUserProfileState")
 
 // ROUTERS HANDLERS
 const router = Router()
@@ -37,6 +41,8 @@ router.post("/signup", signupValidateMiddleware, session, signupController)
 router.post("/login", session, loginController)
 
 // USER INFO
+// load user profile state
+router.get("/profile/state", session, sessionExit, getUserProfileState)
 // load profile details
 router.get("/profile", session, sessionExit, profileController)
 
@@ -75,6 +81,15 @@ router.put("/cart/:id/decrease", session, sessionExit, decreaseCartItemCountCont
 
 // move local db to online db
 router.post("/cart/offline", session, sessionExit, addToUserCartFromLocalStorage)
+
+// load subtotal from server
+router.get("/cart/subtotal", session, sessionExit, getUserSubtotalController)
+
+// load states from server
+router.get("/states", session, sessionExit, getStates)
+
+// load states from server
+router.get("/cart/delivery-fee/:state", session, sessionExit, getuserCartDeliveryFee)
 
 
 

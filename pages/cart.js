@@ -17,8 +17,6 @@ function Cart({ user }) {
     const [prices, setPrices] = useState([])
     const items = useSelector(selectCartItems)
 
-    console.log(items)
-
     useEffect(() => {
         if(user) {
             dispatch(setUser(user))
@@ -32,8 +30,6 @@ function Cart({ user }) {
 
             setSubTotal(total)
         }
-
-        console.log(subTotal)
     }, [prices])
 
     return (

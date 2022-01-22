@@ -3,14 +3,26 @@ import Head from 'next/head'
 import config from 'config'
 import { withIronSession } from 'next-iron-session'
 import { useDispatch } from 'react-redux'
+import { usePaystackPayment } from 'react-paystack'
+import { useToasts } from 'react-toast-notifications'
 import UserLayout from '../components/userLayout'
 import { setUser } from '../features/user/userSlice'
+import NewAddress from '../components/checkout/new-address'
+import CheckoutTotal from '../components/checkout/checkout-total'
 
 function Checkout({ user }) {
     const dispatch = useDispatch()
+    const { addToast } = useToasts()
     const [paymentMethodChoice, setPaymentMethodChoice] = useState('others')
     const [addressChoice, setAddressChoice] = useState("profile")
     const [address, setAddress] = useState("")
+    const [state, setState] = useState("")
+    const [city, setCity] = useState("")
+    const [subtotal, setSubtotal] = useState(0)
+    const [isLoadingSubtotal, setIsLoadingSubtotal] = useState(false)
+    const [deliveryFee, setDeliveryFee] = useState(0)
+    const [isLoadingDeliveryFee, setIsLoadingDeliveryFee] = useState(false)
+    const [isPayable, setIsPayable] = useState(true)
 
     function handleChangePaymentMethod(e) {
         if(e.target.value === "wallet" || e.target.value === "others") {
@@ -29,6 +41,39 @@ function Checkout({ user }) {
             dispatch(setUser(user))
         }
     })
+
+    // paystack config object
+    const paystackConfig = {
+        reference: `${user.id}_safeplaze_${Date.now()}`,
+        email: user.email,
+        amount: 40000,
+        publicKey: 'pk_test_1595d971481e77bb7ac48baa7b9b6d8c8730c70f'
+    }
+
+    const onSuccess = reference => {
+        console.log("...success...")
+        console.log(reference)
+    }
+
+    const onClose = () => {
+        addToast("Transaction did not complete", { appearance: "warning" })
+        console.log("...closed...")
+    }
+    
+    const initializePayment = usePaystackPayment(paystackConfig)
+
+    // end paystack config
+
+    function handlePayment() {
+        if(paymentMethodChoice === 'wallet') {
+            addToast("Wallet coming soon...", { appearance: "info" })
+        } else {
+            initializePayment(onSuccess, onClose)
+        }
+    }
+
+
+
     return (
         <UserLayout>
             <Head>
@@ -47,9 +92,14 @@ function Checkout({ user }) {
                         </div>
                         {
                             addressChoice === "new" && (
-                                <div className="checkout__address-input">
-                                    <input type="text" name="address" id="address" placeholder='Enter full address' value={address} onChange={e => setAddress(e.target.value)} />
-                                </div>
+                                <NewAddress 
+                                    address={address} 
+                                    setAddress={setAddress} 
+                                    state={state}
+                                    setState={setState}
+                                    city={city}
+                                    setCity={setCity}
+                                />
                             )
                         }
                     </div>
@@ -76,24 +126,23 @@ function Checkout({ user }) {
                         </form>
                     </div>
 
-                    <div className="checkout__total">
-                        <div className="checkout__subtotal">
-                            <span className="checkout__subtotal--title">Subtotal</span>
-                            <span className="checkout__subtotal--cost">3,000</span>
-                        </div>
-                        <div className="checkout__subtotal">
-                            <span className="checkout__subtotal--title">Est. Delivery fee</span>
-                            <span className="checkout__subtotal--cost">600</span>
-                        </div>
-                        <hr />
-                        <div className="checkout__subtotal">
-                            <span className="checkout__subtotal--title">Total</span>
-                            <span className="checkout__subtotal--cost">3,600</span>
-                        </div>
-                    </div>
+                    <CheckoutTotal
+                        state={state}
+                        addressChoice={addressChoice}
+                        subtotal={subtotal}
+                        setSubtotal={setSubtotal}
+                        isLoadingSubtotal={isLoadingSubtotal}
+                        setIsLoadingSubtotal={setIsLoadingSubtotal}
+                        deliveryFee={deliveryFee}
+                        isLoadingDeliveryFee={isLoadingDeliveryFee}
+                        setDeliveryFee={setDeliveryFee}
+                        setIsLoadingDeliveryFee={setIsLoadingDeliveryFee}
+                        isPayable={isPayable}
+                        setIsPayable={setIsPayable}
+                    />
 
-                    <form className="cart__cart-checkout-form" action="/proceed-to-payment">
-                        <button className="cart__checkout-btn">
+                    <form onSubmit={e => e.preventDefault()} className="cart__cart-checkout-form" action="/proceed-to-payment">
+                        <button onClick={handlePayment} className="cart__checkout-btn">
                             <i className="fas fa-cash-register"></i>
                             &nbsp;
                             Pay now

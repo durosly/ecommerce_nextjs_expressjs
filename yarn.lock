@@ -2971,6 +2971,11 @@ react-loader-spinner@^4.0.0:
   dependencies:
     prop-types "^15.7.2"
 
+react-paystack@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/react-paystack/-/react-paystack-3.0.5.tgz#e257c6871bc525978f7a4c29e5a016c0f71157e4"
+  integrity sha512-4cswo2iMToFs0eVmLRGlYRhlAFIs0MrfIOEO/RO20Y58ryre+DHd2tHqyLRWmlX3SOs5eYr/38z/L1quk6O6ZA==
+
 react-redux@^7.2.5:
   version "7.2.5"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.2.5.tgz#213c1b05aa1187d9c940ddfc0b29450957f6a3b8"

@@ -1,0 +1,39 @@
+.modal {
+    height: 100vh;
+    width: 100vW;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba($color-dark, .5);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        background-color: rgba($color-primary, .2);
+        border-radius: $border-radius-primary;
+        padding: 2rem;
+    }
+
+    &__close-btn {
+        display: inline-block;
+        outline: none;
+        border: none;
+        align-self: flex-end;
+        padding: .5rem 1rem;
+        cursor: pointer;
+        background-color: transparent;
+        font-weight: bold;
+        font-size: 2rem;
+    }
+
+    &__notice {
+        font-size: map-get($map: $font-sizes, $key: "sm");
+    }
+}

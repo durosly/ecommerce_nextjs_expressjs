@@ -8,6 +8,16 @@
     &__list {
         list-style-type: none;
         padding: 0;
+
+        &--checkout-modal {
+            max-height: 30rem;
+            max-width: 40rem;
+            overflow: auto;
+
+            .cart__list-item--title {
+                max-width: 20rem;
+            }
+        }
     }
 
     &__illustration {
@@ -37,6 +47,9 @@
             font-size: map-get($map: $font-sizes, $key: "md");
             margin-top: 0;
             margin-bottom: $gutter-vertical-small;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         &--quantity-form {

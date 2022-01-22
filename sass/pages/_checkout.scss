@@ -72,6 +72,16 @@
                 background-color: rgba($color-primary, .5);
             }
         }
+
+        select {
+            display: block;
+            padding: 1rem;
+            width: 20rem;
+            font-size: map-get($map: $font-sizes, $key: "sm");
+            border-radius: $border-radius-primary;
+            border: 1px solid $color-primary-dark;
+            outline: none;
+        }
     }
 
     // payment area
