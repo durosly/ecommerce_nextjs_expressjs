@@ -60,7 +60,7 @@ function CheckoutCartItem({ id }) {
                                         <span className="cart__list-item--price-display">&#8358; { commaNumber(product.price - ( product.price * product.discount / 100 )) }</span>
                                     </div>
                                     <div className="cart__list-item--quantity">
-                                        <form action="/quatity" className="cart__list-item--quantity-form">
+                                        <form onSubmit={ e => e.preventDefault() } action="/quatity" className="cart__list-item--quantity-form">
                                             <button disabled={isCartLoading} onClick={removeFromCart} className="cart__list-item-btn">
                                                 <i className="fas fa-trash-alt"></i>
                                             </button>
