@@ -43,14 +43,49 @@ function Checkout({ user }) {
     })
 
     // paystack config object
+    const cost = ( deliveryFee + subtotal ) * 100
     const paystackConfig = {
         reference: `${user.id}_safeplaze_${Date.now()}`,
         email: user.email,
-        amount: 40000,
+        amount: cost,
         publicKey: 'pk_test_1595d971481e77bb7ac48baa7b9b6d8c8730c70f'
     }
 
+    async function createOrder(trxref) {
+        try {
+            const body = {
+                reference: trxref,
+                state,
+                address
+            }
+            const response = await fetch("/user/order", {
+                method: "POST",
+                body: JSON.stringify(body),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+
+            const data = await response.json()
+
+            const { status, message } = data
+
+            console.log(data)
+
+        } catch(error) {
+            addToast(error.message, { appearance: "error" })
+        }
+    }
+
     const onSuccess = reference => {
+        const { message, trxref, status } = reference
+        if(status === "success") {
+            createOrder(trxref)
+            console.log("...creating order...")
+            //addToast(message, { appearance: "success" })
+        } else {
+            addToast(message, { appearance: "error" })
+        }
         console.log("...success...")
         console.log(reference)
     }
@@ -65,10 +100,20 @@ function Checkout({ user }) {
     // end paystack config
 
     function handlePayment() {
+        if(!isPayable) {
+            addToast("You cannot make this payment", { appearance: "error" })
+            return
+        }
         if(paymentMethodChoice === 'wallet') {
             addToast("Wallet coming soon...", { appearance: "info" })
         } else {
-            initializePayment(onSuccess, onClose)
+            if(addressChoice === "new" && address.trim() === "") {
+                addToast("Please, enter address", { appearance: "warning" })
+            } else if(addressChoice === "new" && state.trim() === "") {
+                addToast("Please select a state", { appearance: "warning" })
+            } else {
+                initializePayment(onSuccess, onClose)
+            }
         }
     }
 
@@ -142,7 +187,7 @@ function Checkout({ user }) {
                     />
 
                     <form onSubmit={e => e.preventDefault()} className="cart__cart-checkout-form" action="/proceed-to-payment">
-                        <button onClick={handlePayment} className="cart__checkout-btn">
+                        <button disabled={!isPayable} onClick={handlePayment} className="cart__checkout-btn">
                             <i className="fas fa-cash-register"></i>
                             &nbsp;
                             Pay now

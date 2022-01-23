@@ -13,5 +13,9 @@
     "cookie": {
         "name": "safe-plaze-cookie",
         "password": "io99v8serw9e8f9soiv98se9efs9oc8voseieif9sd8dcoief9s8ddo"
+    },
+    "paystack": {
+        "private_key": "sk_test_0669e5fb5b00dbb8026c3845abea0b1501d95eb3",
+        "public_key": "pk_test_1595d971481e77bb7ac48baa7b9b6d8c8730c70f"
     }
 }

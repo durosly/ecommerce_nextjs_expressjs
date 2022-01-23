@@ -27,6 +27,7 @@ const getUserSubtotalController = require("../controllers/getUserSubtotalControl
 const getStates = require("../controllers/getStates")
 const getuserCartDeliveryFee = require("../controllers/getuserCartDeliveryFee")
 const getUserProfileState = require("../controllers/getUserProfileState")
+const createOrder = require("../controllers/createOrder")
 
 // ROUTERS HANDLERS
 const router = Router()
@@ -91,6 +92,8 @@ router.get("/states", session, sessionExit, getStates)
 // load states from server
 router.get("/cart/delivery-fee/:state", session, sessionExit, getuserCartDeliveryFee)
 
+// create order
+router.post("/order", session, sessionExit, createOrder)
 
 
 module.exports = router

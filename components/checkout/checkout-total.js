@@ -51,26 +51,24 @@ function CheckoutTotal({ state, addressChoice, subtotal, setSubtotal, isLoadingS
                                 console.log(fees)
                                 const feesReducer = (prev, curr) => prev + curr.price
                                 const feesTotal = fees.reduce(feesReducer, 0)
-                                //console.log(feesTotal)
+                                console.log(feesTotal)
                                 setDeliveryFee(feesTotal)
                                 setIsPayable(true)
                                 setIsLoadingDeliveryFee(false)
                             } else {
                                 // find product id that has no delivery fee
-                                console.log(fees, cartItems)
-
                                 const productIds = fees.map(fee => fee.productId)
 
                                 const missingItems = cartItems.filter(item => !productIds.includes(item.id))
 
                                 setMissingItemsIds(missingItems)
 
-                                setShowModal(true)
                                 
                                 // set payable to false
                                 setIsPayable(false)
                                 setIsLoadingDeliveryFee(false)
                                 // set show missing item(s) to true
+                                setShowModal(true)
                             }
                         } else {
                             throw new Error("No items in your cart.")
@@ -124,7 +122,15 @@ function CheckoutTotal({ state, addressChoice, subtotal, setSubtotal, isLoadingS
                 </div>
                 <div className="checkout__subtotal">
                     <span className="checkout__subtotal--title">Est. Delivery fee</span>
-                    <span className="checkout__subtotal--cost">{ isLoadingDeliveryFee ? <Loader type='TailSpin' height={16} width={16} /> : commaNumber(deliveryFee)}</span>
+                    <span className="checkout__subtotal--cost">
+                        { 
+                            isLoadingDeliveryFee ? (
+                                <Loader type='TailSpin' height={16} width={16} />
+                            ) : (
+                                deliveryFee === 0 ? "Free" : commaNumber(deliveryFee)
+                            )
+                        }
+                    </span>
                 </div>
                 <hr />
                 <div className="checkout__subtotal">
