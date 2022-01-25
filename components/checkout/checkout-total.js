@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import Loader from 'react-loader-spinner'
 import { useToasts } from 'react-toast-notifications'
 import commaNumber from 'comma-number'
-import { selectCartItems } from '../../features/cart/cartSlice'
 import CheckoutMissingItemModal from '../modals/checkout-missing-item-modal'
 
-function CheckoutTotal({ state, addressChoice, subtotal, setSubtotal, isLoadingSubtotal, setIsLoadingSubtotal, deliveryFee, setDeliveryFee, isLoadingDeliveryFee, setIsLoadingDeliveryFee, isPayable, setIsPayable }) {
+function CheckoutTotal({ state, addressChoice, subtotal, setSubtotal, isLoadingSubtotal, setIsLoadingSubtotal, deliveryFee, setDeliveryFee, isLoadingDeliveryFee, setIsLoadingDeliveryFee, isPayable, setIsPayable, cartItems }) {
     const { addToast } = useToasts()
-    const cartItems = useSelector(selectCartItems)
     const [missingItemsIds, setMissingItemsIds] = useState([])
     const [showModal, setShowModal] = useState(false)
 
@@ -44,38 +41,36 @@ function CheckoutTotal({ state, addressChoice, subtotal, setSubtotal, isLoadingS
 
                 const { status, message, fees } = data
 
+                
                 if(status === true) {
-                    if(status === true) {
-                        if(cartItems.length > 0) {
-                            if(cartItems.length === fees.length) {
-                                console.log(fees)
-                                const feesReducer = (prev, curr) => prev + curr.price
-                                const feesTotal = fees.reduce(feesReducer, 0)
-                                console.log(feesTotal)
-                                setDeliveryFee(feesTotal)
-                                setIsPayable(true)
-                                setIsLoadingDeliveryFee(false)
-                            } else {
-                                // find product id that has no delivery fee
-                                const productIds = fees.map(fee => fee.productId)
-
-                                const missingItems = cartItems.filter(item => !productIds.includes(item.id))
-
-                                setMissingItemsIds(missingItems)
-
-                                
-                                // set payable to false
-                                setIsPayable(false)
-                                setIsLoadingDeliveryFee(false)
-                                // set show missing item(s) to true
-                                setShowModal(true)
-                            }
+                    if(cartItems.length > 0) {
+                        if(cartItems.length === fees.length) {
+                            console.log(fees, "fees")
+                            const feesReducer = (prev, curr) => prev + curr.price
+                            const feesTotal = fees.reduce(feesReducer, 0)
+                            console.log(feesTotal)
+                            setDeliveryFee(feesTotal)
+                            setIsPayable(true)
+                            setIsLoadingDeliveryFee(false)
                         } else {
-                            throw new Error("No items in your cart.")
+                            // find product id that has no delivery fee
+                            const productIds = fees.map(fee => fee.productId)
+
+                            const missingItems = cartItems.filter(item => !productIds.includes(item.id))
+
+                            setMissingItemsIds(missingItems)
+                            
+                            // set payable to false
+                            setIsPayable(false)
+                            setIsLoadingDeliveryFee(false)
+                            // set show missing item(s) to true
+                            setShowModal(true)
                         }
                     } else {
-                        throw new Error(message)
+                        throw new Error("No items in your cart.")
                     }
+                } else {
+                    throw new Error(message)
                 }
             } catch(error) {
 
@@ -95,9 +90,9 @@ function CheckoutTotal({ state, addressChoice, subtotal, setSubtotal, isLoadingS
                 } else if(addressChoice === 'profile') {
                     const response = await fetch("/user/profile/state")
                     const data = await response.json()
-                    const { status, message, state } = data
+                    const { status, message, state: userState } = data
                     if(status === true) {
-                        makeNetworkRequest(state)
+                        makeNetworkRequest(userState)
                     } else {
                         throw new Error(message)
                     }

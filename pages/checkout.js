@@ -9,8 +9,11 @@ import UserLayout from '../components/userLayout'
 import { setUser } from '../features/user/userSlice'
 import NewAddress from '../components/checkout/new-address'
 import CheckoutTotal from '../components/checkout/checkout-total'
+import getCart from '../server/database/models/cart'
+import { DataTypes } from 'sequelize'
+import sequelize from '../server/database'
 
-function Checkout({ user }) {
+function Checkout({ user, cartItems }) {
     const dispatch = useDispatch()
     const { addToast } = useToasts()
     const [paymentMethodChoice, setPaymentMethodChoice] = useState('others')
@@ -20,7 +23,7 @@ function Checkout({ user }) {
     const [city, setCity] = useState("")
     const [subtotal, setSubtotal] = useState(0)
     const [isLoadingSubtotal, setIsLoadingSubtotal] = useState(false)
-    const [deliveryFee, setDeliveryFee] = useState(0)
+    const [deliveryFee, setDeliveryFee] = useState(null)
     const [isLoadingDeliveryFee, setIsLoadingDeliveryFee] = useState(false)
     const [isPayable, setIsPayable] = useState(true)
 
@@ -184,6 +187,7 @@ function Checkout({ user }) {
                         setIsLoadingDeliveryFee={setIsLoadingDeliveryFee}
                         isPayable={isPayable}
                         setIsPayable={setIsPayable}
+                        cartItems={cartItems}
                     />
 
                     <form onSubmit={e => e.preventDefault()} className="cart__cart-checkout-form" action="/proceed-to-payment">
@@ -209,10 +213,19 @@ export const getServerSideProps = withIronSession(
     async ({ req, res }) => {
         const user = req.session.get("user")
 
+        const Cart = getCart(sequelize, DataTypes)
+
+        
         if(user) {
-            return {
-                props: {
-                    user
+            const cartItems = await Cart.findAll({ where: { userId: user.id }, attributes: [["productId", "id"], ["count", "quantity"]] })
+            const items = cartItems.map(item => item.dataValues)
+    
+            if(cartItems.length > 0) {
+                return {
+                    props: {
+                        user,
+                        cartItems: items
+                    }
                 }
             }
         }

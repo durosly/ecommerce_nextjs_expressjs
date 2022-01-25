@@ -51,8 +51,6 @@ module.exports = async (req, res) => {
     
                         const calculatedCost = subtotal + totalFee
 
-                        console.log(paystackAmt, calculatedCost)
-
                         if(paystackAmt === (calculatedCost * 100)) {
 
                             const orderArr = items.map((item, i) => {
@@ -63,7 +61,7 @@ module.exports = async (req, res) => {
                                     userId: sessionUser.id,
                                     trxref: reference,
                                     price: prices[i],
-                                    deliveryFee: fees[i],
+                                    deliveryFee: fees[i].price,
                                     channel,
                                     status: 1,
                                     quantity: item.quantity

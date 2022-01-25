@@ -10,7 +10,7 @@ function CheckoutCartItem({ id }) {
     const [isLoading, setIsLoading] = useState(false)
     const [isError, setIsError] = useState(false)
     const { addToast } = useToasts()
-    const { removeFromCart, isLoading: isCartLoading } = useToggleCartStatus(id)
+    const { removeFromCart, isLoading: isCartLoading, deleteSuccess } = useToggleCartStatus(id)
     useEffect(() => {
         async function loadProduct() {
             setIsLoading(true)
@@ -35,6 +35,12 @@ function CheckoutCartItem({ id }) {
 
         loadProduct()
     }, [])
+
+    useEffect(() => {
+        if(deleteSuccess === true) {
+            location.reload()
+        }
+    }, [deleteSuccess])
 
     return (
         <li className="cart__list-item">

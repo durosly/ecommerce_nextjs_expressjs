@@ -1,7 +1,7 @@
 import CheckoutCartItem from './checkout-cart-item'
 
 function CheckoutMissingItemModal({ setShowModal, missingItemsIds }) {
-    console.log(missingItemsIds)
+    
     return (
         <div className="modal">
             <div className="modal__card">

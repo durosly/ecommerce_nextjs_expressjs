@@ -11,6 +11,8 @@ function useToggleCartStatus(id) {
     const isUnmounting = useRef(false)
     const [status, setStatus] = useState(false)
     const [inCart, setInCart] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
+    const [deleteSuccess, setDeleteSuccess] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const userId = useSelector(selectUserId)
     const item = selectCartItem(store.getState(), id)
@@ -80,33 +82,46 @@ function useToggleCartStatus(id) {
     }
 
     async function removeFromCart() {
+        try {
 
-        if(status === true) {
-                    
-            // update cart for online users
-            const response = await fetch(`/user/cart/${ id }`, {
-                method: "DELETE"
-            })
-
-            const data = await response.json()
-            if(data) {
-                const { status: stat, message } = data
-                if(stat === true) {
-                    dispatch(removeItemFromCart({ status, id }))
-                    setInCart(false)
-                    setIsLoading(false)
+            if(status === true) {
+    
+                // set deleting status
+                setIsDeleting(true)
+                        
+                // update cart for online users
+                const response = await fetch(`/user/cart/${ id }`, {
+                    method: "DELETE"
+                })
+    
+                const data = await response.json()
+                if(data) {
+                    const { status: stat, message } = data
+                    if(stat === true) {
+                        dispatch(removeItemFromCart({ status, id }))
+                        setInCart(false)
+                        setIsLoading(false)
+                        setIsDeleting(false)
+                        setDeleteSuccess(true)
+                    } else {
+                        throw new Error(message)
+                    }
                 } else {
-                    throw new Error(message)
+                    throw new Error("An error occured when trying to remove item from cart")
                 }
             } else {
-                throw new Error("An error occured when trying to remove item from cart")
+                // update cart for offline users
+                dispatch(removeItemFromCart({ status, id }))
+                setInCart(false)
+                setIsLoading(false)
+                setIsDeleting(false)
+                setDeleteSuccess(true)
             }
-        } else {
-            // update cart for offline users
-            dispatch(removeItemFromCart({ status, id }))
-            setInCart(false)
-            setIsLoading(false)
+        } catch(error) {
+            setIsDeleting(false)
+            addToast(error.message, { appearance: "error" })
         }
+
     }
 
     async function increaseCartItemCount() {
@@ -187,7 +202,7 @@ function useToggleCartStatus(id) {
 
     }
 
-    return { inCart, addToCart, removeFromCart, handleCartSubmit, increaseCartItemCount, decreaseCartItemCount, isLoading }
+    return { inCart, addToCart, removeFromCart, handleCartSubmit, increaseCartItemCount, decreaseCartItemCount, isLoading, isDeleting, deleteSuccess }
 }
 
 export default useToggleCartStatus
