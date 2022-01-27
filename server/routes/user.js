@@ -4,6 +4,7 @@ const session = require("../middleware/session")
 const signupValidateMiddleware = require("../middleware/signupValidateMiddleware")
 const signupEmailValidateMiddleware = require("../middleware/signupEmailValidateMiddleware")
 const sessionExit = require('../middleware/sessionExist')
+const checkoutValidationMiddleware = require("../middleware/checkoutValidationMiddleware")
 
 //CONTROLLERS
 const signupController = require("../controllers/signupController")
@@ -93,7 +94,7 @@ router.get("/states", session, sessionExit, getStates)
 router.get("/cart/delivery-fee/:state", session, sessionExit, getuserCartDeliveryFee)
 
 // create order
-router.post("/order", session, sessionExit, createOrder)
+router.post("/order", checkoutValidationMiddleware, session, sessionExit, createOrder)
 
 
 module.exports = router

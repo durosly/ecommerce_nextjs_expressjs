@@ -6,13 +6,14 @@ const Cart = require("../database/models/cart")(sequelize, DataTypes)
 const DeliveryFee = require("../database/models/deliveryfee")(sequelize, DataTypes)
 const Order = require("../database/models/order")(sequelize, DataTypes)
 const Product = require("../database/models/product")(sequelize, DataTypes)
+const User = require("../database/models/user")(sequelize, DataTypes)
 const CustomError = require("../errors")
 
 // relationship
 Cart.belongsTo(Product, { foreignKey: "productId" })
 
 module.exports = async (req, res) => {
-    const { reference, state, address } = req.body
+    const { reference, state, address, addressChoice } = req.body
     const sessionUser = req.session.get("user")
     const environment = process.env.NODE_ENV
     const API_KEY = config.get("paystack.private_key")
@@ -28,6 +29,16 @@ module.exports = async (req, res) => {
         const { status, data } = verification.body
         const { amount: paystackAmt, channel } = data
         //console.log(verification.body)
+
+        // set up user state == location
+        let userState = state
+        let userAddress = address
+
+        if(addressChoice === 'profile') {
+            const query = await User.findByPk(sessionUser.id, { attributes: ['state', 'address']})
+            userState = query.state
+            userAddress = query.address
+        }
 
         if(status === true) {
                 
@@ -56,8 +67,8 @@ module.exports = async (req, res) => {
                             const orderArr = items.map((item, i) => {
                                 return {
                                     productId: item.productId,
-                                    address,
-                                    state,
+                                    address: userAddress,
+                                    state: userState,
                                     userId: sessionUser.id,
                                     trxref: reference,
                                     price: prices[i],
@@ -80,7 +91,6 @@ module.exports = async (req, res) => {
                             throw new CustomError("Transaction verification failed. Please, contact admin")
                         }
     
-                        
                     } else {
                         throw new CustomError("An error occurred with fee and cart items. Please, contact admin")
                     }
@@ -99,7 +109,7 @@ module.exports = async (req, res) => {
         
         res.json({ status: true, message: "Order created sucessfully" })
     } catch(error) {
-        console.log(error.message)
+        //console.log(error.message)
         let message = "Something went wrong creating order"
         if(error instanceof CustomError) {
             message = error.message

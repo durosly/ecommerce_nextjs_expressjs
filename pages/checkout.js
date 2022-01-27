@@ -5,27 +5,32 @@ import { withIronSession } from 'next-iron-session'
 import { useDispatch } from 'react-redux'
 import { usePaystackPayment } from 'react-paystack'
 import { useToasts } from 'react-toast-notifications'
+import Loader from 'react-loader-spinner'
+import { useRouter } from 'next/router'
 import UserLayout from '../components/userLayout'
 import { setUser } from '../features/user/userSlice'
 import NewAddress from '../components/checkout/new-address'
 import CheckoutTotal from '../components/checkout/checkout-total'
-import getCart from '../server/database/models/cart'
+import getCartModel from '../server/database/models/cart'
+import getUserModel from '../server/database/models/user'
 import { DataTypes } from 'sequelize'
 import sequelize from '../server/database'
 
-function Checkout({ user, cartItems }) {
+function Checkout({ user, cartItems, state: defaultState }) {
     const dispatch = useDispatch()
     const { addToast } = useToasts()
+    const router = useRouter()
     const [paymentMethodChoice, setPaymentMethodChoice] = useState('others')
     const [addressChoice, setAddressChoice] = useState("profile")
     const [address, setAddress] = useState("")
-    const [state, setState] = useState("")
+    const [state, setState] = useState(defaultState)
     const [city, setCity] = useState("")
     const [subtotal, setSubtotal] = useState(0)
     const [isLoadingSubtotal, setIsLoadingSubtotal] = useState(false)
     const [deliveryFee, setDeliveryFee] = useState(null)
     const [isLoadingDeliveryFee, setIsLoadingDeliveryFee] = useState(false)
     const [isPayable, setIsPayable] = useState(true)
+    const [isCheckingOut, setIsCheckingOut] = useState(false)
 
     function handleChangePaymentMethod(e) {
         if(e.target.value === "wallet" || e.target.value === "others") {
@@ -59,7 +64,8 @@ function Checkout({ user, cartItems }) {
             const body = {
                 reference: trxref,
                 state,
-                address
+                address,
+                addressChoice
             }
             const response = await fetch("/user/order", {
                 method: "POST",
@@ -73,9 +79,15 @@ function Checkout({ user, cartItems }) {
 
             const { status, message } = data
 
-            console.log(data)
+            if(status === true) {
+                addToast(message, { appearance: "success" })
+                router.push("/order")
+            } else {
+                throw new Error(message)
+            }
 
         } catch(error) {
+            setIsCheckingOut(false)
             addToast(error.message, { appearance: "error" })
         }
     }
@@ -85,12 +97,10 @@ function Checkout({ user, cartItems }) {
         if(status === "success") {
             createOrder(trxref)
             console.log("...creating order...")
-            //addToast(message, { appearance: "success" })
+            addToast(message, { appearance: "success" })
         } else {
             addToast(message, { appearance: "error" })
         }
-        console.log("...success...")
-        console.log(reference)
     }
 
     const onClose = () => {
@@ -115,6 +125,7 @@ function Checkout({ user, cartItems }) {
             } else if(addressChoice === "new" && state.trim() === "") {
                 addToast("Please select a state", { appearance: "warning" })
             } else {
+                setIsCheckingOut(true)
                 initializePayment(onSuccess, onClose)
             }
         }
@@ -191,10 +202,19 @@ function Checkout({ user, cartItems }) {
                     />
 
                     <form onSubmit={e => e.preventDefault()} className="cart__cart-checkout-form" action="/proceed-to-payment">
-                        <button disabled={!isPayable} onClick={handlePayment} className="cart__checkout-btn">
-                            <i className="fas fa-cash-register"></i>
-                            &nbsp;
-                            Pay now
+                        <button disabled={!isPayable || isCheckingOut} onClick={handlePayment} className="cart__checkout-btn">
+                            {
+                                isCheckingOut ? (
+                                    <Loader type='TailSpin' height={16} width={16} />
+                                ) : (
+                                    <>
+                                        <i className="fas fa-cash-register"></i>
+                                        &nbsp;
+                                        Pay now
+                                    </>
+                                )
+                            }
+                            
                         </button>
                     </form>
 
@@ -213,18 +233,24 @@ export const getServerSideProps = withIronSession(
     async ({ req, res }) => {
         const user = req.session.get("user")
 
-        const Cart = getCart(sequelize, DataTypes)
+        const Cart = getCartModel(sequelize, DataTypes)
+        const User = getUserModel(sequelize, DataTypes)
 
         
         if(user) {
             const cartItems = await Cart.findAll({ where: { userId: user.id }, attributes: [["productId", "id"], ["count", "quantity"]] })
             const items = cartItems.map(item => item.dataValues)
+
+            const userState = await User.findByPk(user.id, { attributes: ['state']})
+
+            const { state } = userState
     
             if(cartItems.length > 0) {
                 return {
                     props: {
                         user,
-                        cartItems: items
+                        cartItems: items,
+                        state
                     }
                 }
             }
