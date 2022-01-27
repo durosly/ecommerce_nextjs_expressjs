@@ -72,7 +72,7 @@ module.exports = async (req, res) => {
                                     userId: sessionUser.id,
                                     trxref: reference,
                                     price: prices[i],
-                                    deliveryFee: fees[i].price,
+                                    deliveryfee: fees[i].price,
                                     channel,
                                     status: 1,
                                     quantity: item.quantity
