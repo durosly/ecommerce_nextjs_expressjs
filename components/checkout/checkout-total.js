@@ -45,10 +45,10 @@ function CheckoutTotal({ state, addressChoice, subtotal, setSubtotal, isLoadingS
                 if(status === true) {
                     if(cartItems.length > 0) {
                         if(cartItems.length === fees.length) {
-                            console.log(fees, "fees")
+                            //console.log(fees, "fees")
                             const feesReducer = (prev, curr) => prev + curr.price
                             const feesTotal = fees.reduce(feesReducer, 0)
-                            console.log(feesTotal)
+                            //console.log(feesTotal)
                             setDeliveryFee(feesTotal)
                             setIsPayable(true)
                             setIsLoadingDeliveryFee(false)

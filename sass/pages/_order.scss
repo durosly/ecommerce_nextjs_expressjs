@@ -67,6 +67,13 @@
             margin-right: $gutter-horizontal;
         }
 
+        &--image-container {
+            height: 10rem;
+            border-radius: $border-radius-primary;
+            overflow: hidden;
+            position: relative;
+        }
+
         &--image {
             height: 10rem;
             border-radius: inherit;

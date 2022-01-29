@@ -29,6 +29,9 @@ const getStates = require("../controllers/getStates")
 const getuserCartDeliveryFee = require("../controllers/getuserCartDeliveryFee")
 const getUserProfileState = require("../controllers/getUserProfileState")
 const createOrder = require("../controllers/createOrder")
+const getOrderProductInfo = require("../controllers/getOrderProductInfo")
+const getOrders = require("../controllers/getOrders")
+const getOrderStatus = require("../controllers/getOrderStatus")
 
 // ROUTERS HANDLERS
 const router = Router()
@@ -95,6 +98,15 @@ router.get("/cart/delivery-fee/:state", session, sessionExit, getuserCartDeliver
 
 // create order
 router.post("/order", checkoutValidationMiddleware, session, sessionExit, createOrder)
+
+// get order status
+router.get("/order/:id/status", session, sessionExit, getOrderStatus)
+
+// get order product 
+router.get("/order/:id", session, sessionExit, getOrderProductInfo)
+
+// get orders by date
+router.get("/orders/:date", session, sessionExit, getOrders)
 
 
 module.exports = router
