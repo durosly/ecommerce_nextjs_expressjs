@@ -32,6 +32,7 @@ const createOrder = require("../controllers/createOrder")
 const getOrderProductInfo = require("../controllers/getOrderProductInfo")
 const getOrders = require("../controllers/getOrders")
 const getOrderStatus = require("../controllers/getOrderStatus")
+const getProductDetails = require("../controllers/getProductDetails")
 
 // ROUTERS HANDLERS
 const router = Router()
@@ -59,6 +60,9 @@ router.get("/categories", getCategory)
 
 // get products of a particular category
 router.get("/products/category/:categoryId", getProductOfCategory)
+
+// get product details
+router.get("/products/:id/details", getProductDetails)
 
 // get a particular product info
 router.get("/product/:id", getProduct)

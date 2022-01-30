@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const {v4: uuidv4} = require("uuid");
 module.exports = (sequelize, DataTypes) => {
   class ProductDetails extends Model {
     /**
@@ -19,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'ProductDetails',
+  });
+
+  ProductDetails.beforeCreate((details, _) => {
+    details.id = uuidv4();
+    return details;
   });
   return ProductDetails;
 };

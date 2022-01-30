@@ -8,6 +8,7 @@ import useSWR from 'swr'
 import Loader from 'react-loader-spinner'
 import UserLayout from '../../components/userLayout'
 import ProductDisplay from '../../components/product-details/product-display'
+import ProductDetailsDisplay from '../../components/product-details/product-details-display'
 import { setUser } from '../../features/user/userSlice'
 
 const fetcher = (url) => fetch(url).then(res => res.json())
@@ -44,23 +45,7 @@ function ProductDetailsPage({ user }) {
 
                                 <>
                                     <ProductDisplay product={product} />
-                                    <section className="product-description">
-                                        <h2 className="product-description__title">Product details</h2>
-                                        <div className="product-description__content">
-                                            <ul className="product-description__list">
-                                                <li>100% cotton</li>
-                                                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, obcaecati.</li>
-                                                <li>Best linel material</li>
-                                                <li>Can be washed with washing machine</li>
-                                                <li>Handles bleach properly. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde, voluptate.</li>
-                                                <li>Consistent colour design. Lorem ipsum dolor sit amet.</li>
-                                                <li>Fast delivery in Warri</li>
-                                                <li>Nice to meet you</li>
-                                                <li>Black</li>
-                                                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos ipsum veniam, doloremque maiores tempora blanditiis? Odit, repudiandae sequi. Ea laudantium doloremque suscipit dolorum dignissimos laborum enim fugit ipsam ex? Eos.</li>
-                                            </ul>
-                                        </div>
-                                    </section>
+                                    <ProductDetailsDisplay />
                                     <section className="product-specification">
                                         <h2 className="product-specification__title">Technical details</h2>
                                         <ul className="product-specification__list">

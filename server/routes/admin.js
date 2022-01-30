@@ -32,6 +32,8 @@ const adminGetStatesForDeliveryFee = require("../controllers/adminGetStatesForDe
 const adminGetDeliveryFees = require("../controllers/adminGetDeliveryFees")
 const adminDeleteDeliveryFee = require("../controllers/adminDeleteDeliveryFee")
 const adminSetProductDetails = require("../controllers/adminSetProductDetails")
+const getProductDetails = require("../controllers/getProductDetails")
+const adminDeleteProductDetails = require("../controllers/adminDeleteProductDetails")
 
 // ROUTERS HANDLERS
 const router = Router()
@@ -185,18 +187,32 @@ router.post("/category", session, sessionAdminExit, createCategoryController)
  router.delete("/product/:id/delivery-fee", session, sessionAdminExit, adminDeleteDeliveryFee)
 
 /**
- * @route /admin/product/:id
- * @method DELETE
- * @access PRIVATE
- */
- router.delete("/product/:id", session, sessionAdminExit, adminDeleteProduct)
-
-/**
  * @route /admin/product/:id/details
  * @method POST
  * @access PRIVATE
  */
  router.post("/product/:id/details", session, sessionAdminExit, adminSetProductDetails)
+
+/**
+ * @route /admin/product/:id/details
+ * @method GET
+ * @access PRIVATE
+ */
+ router.get("/product/:id/details", session, sessionAdminExit, getProductDetails)
+
+ /**
+ * @route /admin/product/:id/details
+ * @method DELETE
+ * @access PRIVATE
+ */
+  router.delete("/product/:id/details", session, sessionAdminExit, adminDeleteProductDetails)
+
+ /**
+ * @route /admin/product/:id
+ * @method DELETE
+ * @access PRIVATE
+ */
+  router.delete("/product/:id", session, sessionAdminExit, adminDeleteProduct)
 
 /**
  * @route /admin/product

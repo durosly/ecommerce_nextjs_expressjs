@@ -1,0 +1,24 @@
+const sequelize = require("../database")
+const { DataTypes } = require("sequelize")
+const ProductDetails = require("../database/models/productdetails")(sequelize, DataTypes)
+const CustomError = require("../errors")
+
+module.exports = async (req, res) => {
+    try {
+        const { id } = req.params
+        const productDetails = await ProductDetails.findAll({
+            where: { productId: id }
+        })
+
+        if(productDetails.length === 0) throw new CustomError("No product details found")
+
+        res.json({ status: true, message: "success", details: productDetails })
+    } catch(error) {
+        let message = "Something went wrong"
+        if(error instanceof CustomError) {
+            message = error.message
+        }
+
+        res.status(400).json({ status: false, message })
+    }
+}
