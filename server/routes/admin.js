@@ -4,6 +4,7 @@ const { Router } = require("express")
 const session = require("../middleware/session")
 const sessionAdminExit = require("../middleware/sessionAdminExist")
 const specialCategoryValidationMiddleware = require("../middleware/specialCategoryValidationMiddleware")
+const setProductDetailsValidationMiddleware = require("../middleware/setProductDetailsValidationMiddleware")
 const isSuperUser = require("../middleware/isSuperUser")
 
 //CONTROLLERS
@@ -30,6 +31,7 @@ const adminSetProductDeliveryFee = require("../controllers/adminSetProductDelive
 const adminGetStatesForDeliveryFee = require("../controllers/adminGetStatesForDeliveryFee")
 const adminGetDeliveryFees = require("../controllers/adminGetDeliveryFees")
 const adminDeleteDeliveryFee = require("../controllers/adminDeleteDeliveryFee")
+const adminSetProductDetails = require("../controllers/adminSetProductDetails")
 
 // ROUTERS HANDLERS
 const router = Router()
@@ -188,6 +190,13 @@ router.post("/category", session, sessionAdminExit, createCategoryController)
  * @access PRIVATE
  */
  router.delete("/product/:id", session, sessionAdminExit, adminDeleteProduct)
+
+/**
+ * @route /admin/product/:id/details
+ * @method POST
+ * @access PRIVATE
+ */
+ router.post("/product/:id/details", session, sessionAdminExit, adminSetProductDetails)
 
 /**
  * @route /admin/product

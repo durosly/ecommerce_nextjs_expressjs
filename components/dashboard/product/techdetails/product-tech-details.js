@@ -6,6 +6,7 @@ function ProductTechDetails () {
             <div className="card-body">
 
                 <h1>Technical Details</h1>
+                <hr />
             </div>
         </div>
     )

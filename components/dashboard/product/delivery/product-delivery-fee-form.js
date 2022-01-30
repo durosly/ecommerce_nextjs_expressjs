@@ -102,6 +102,7 @@ function ProductDeliveryFeeForm() {
         <div className="card">
             <div className="card-body">
                 <h1>Delivery fees</h1>
+                <hr />
                 <p className='text-muted mb-2'>Enter zero for free delivery. Any state not selected is termed as not available for delivery</p>
                 <div className="row">
                     <div className="col-md-12">
